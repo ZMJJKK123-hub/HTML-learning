@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>第 18 步：组件化与状态</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #0b1220;
+      --card: #0f172a;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --border: #1f2937;
+      --danger: #f87171;
+      --success: #34d399;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 24px;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.12);
+      color: var(--accent);
+      font-size: 14px;
+    }
+    .tag { display: inline-block; padding: 2px 8px; border-radius: 999px; background: #1f2937; border: 1px solid var(--border); color: var(--muted); font-size: 12px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.24);
+    }
+    .card h3 { margin: 0 0 6px; }
+    .muted { color: var(--muted); font-size: 14px; }
+    button {
+      cursor: pointer;
+      padding: 8px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #1f2937;
+      color: var(--text);
+      transition: transform 0.15s ease, border-color 0.15s ease;
+    }
+    button:hover { transform: translateY(-1px); border-color: var(--accent); }
+    .row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .tab-list { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+    .tab {
+      padding: 8px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #111827;
+      color: var(--text);
+    }
+    .tab[aria-selected="true"] { border-color: var(--accent); color: var(--accent); }
+    .panel { display: none; }
+    .panel.active { display: block; }
+    .modal-backdrop {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      align-items: center; justify-content: center;
+      padding: 16px;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      width: min(420px, 100%);
+      box-shadow: 0 18px 50px rgba(0,0,0,0.35);
+    }
+    .toast-stack { position: fixed; right: 16px; bottom: 16px; display: flex; flex-direction: column; gap: 10px; }
+    .toast {
+      background: #111827;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      min-width: 220px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+    }
+    .toast.success { border-color: var(--success); }
+    .toast.error { border-color: var(--danger); }
+    .list { margin-top: 10px; padding: 0; list-style: none; }
+    .item { padding: 10px; border: 1px solid var(--border); border-radius: 10px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 999px; background: #1f2937; border: 1px solid var(--border); color: var(--muted); font-size: 12px; }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <div class="pill">第 18 步 · 组件化与状态</div>
+      <div class="muted">配套教程：教程_JS_18_组件化与状态.md · 上一站：17_js_async_data.html</div>
+    </div>
+    <div class="row">
+      <a href="17_js_async_data.html" class="tag">返回第 17 步</a>
+      <a href="教程_JS_18_组件化与状态.md" class="tag">阅读教程</a>
+    </div>
+  </header>
+
+  <div class="grid">
+    <section class="card" id="tabs-card">
+      <h3>可复用 Tabs 组件</h3>
+      <p class="muted">状态集中、事件委托、ARIA 支持。</p>
+      <div class="tab-list" role="tablist" aria-label="示例标签页">
+        <button class="tab" role="tab" aria-selected="true" data-tab="a">概览</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="b">任务</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="c">设置</button>
+      </div>
+      <div class="panel active" data-panel="a">这是概览内容。</div>
+      <div class="panel" data-panel="b">这里展示任务列表。</div>
+      <div class="panel" data-panel="c">这里是设置区域。</div>
+    </section>
+
+    <section class="card" id="modal-card">
+      <h3>模态弹窗与焦点管理</h3>
+      <p class="muted">打开时锁定焦点，Esc 关闭。</p>
+      <button id="open-modal">打开模态</button>
+      <div class="modal-backdrop" id="modal-backdrop" aria-hidden="true">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+          <h3 id="modal-title">保存更改？</h3>
+          <p class="muted">这是一个示例模态，按 Esc 或点击关闭。</p>
+          <div class="row" style="margin-top:12px;">
+            <button id="btn-save">保存</button>
+            <button id="btn-cancel">取消</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" id="toast-card">
+      <h3>全局状态与 Toast</h3>
+      <p class="muted">统一队列，超时自动移除。</p>
+      <div class="row" style="margin-bottom:8px;">
+        <button data-toast="success">成功提示</button>
+        <button data-toast="error">错误提示</button>
+      </div>
+      <ul class="list" id="state-list"></ul>
+    </section>
+  </div>
+
+  <div class="toast-stack" id="toast-stack" aria-live="polite" aria-atomic="true"></div>
+
+  <script type="module">
+    // Tabs 组件：状态集中 + 委托
+    const tabList = document.querySelector('#tabs-card .tab-list');
+    const tabs = Array.from(tabList.querySelectorAll('.tab'));
+    const panels = Array.from(document.querySelectorAll('#tabs-card .panel'));
+    tabList.addEventListener('click', (event) => {
+      const tab = event.target.closest('.tab');
+      if (!tab) return;
+      const key = tab.dataset.tab;
+      tabs.forEach(t => t.setAttribute('aria-selected', String(t === tab)));
+      panels.forEach(p => p.classList.toggle('active', p.dataset.panel === key));
+    });
+
+    // 模态：焦点管理 + Esc 关闭
+    const backdrop = document.querySelector('#modal-backdrop');
+    const openBtn = document.querySelector('#open-modal');
+    const btnSave = document.querySelector('#btn-save');
+    const btnCancel = document.querySelector('#btn-cancel');
+    let lastFocus = null;
+
+    function openModal() {
+      lastFocus = document.activeElement;
+      backdrop.classList.add('open');
+      backdrop.setAttribute('aria-hidden', 'false');
+      btnSave.focus();
+    }
+    function closeModal() {
+      backdrop.classList.remove('open');
+      backdrop.setAttribute('aria-hidden', 'true');
+      (lastFocus || openBtn).focus();
+    }
+
+    openBtn.addEventListener('click', openModal);
+    btnCancel.addEventListener('click', closeModal);
+    btnSave.addEventListener('click', () => {
+      showToast('已保存', 'success');
+      closeModal();
+    });
+    backdrop.addEventListener('click', (event) => {
+      if (event.target === backdrop) closeModal();
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && backdrop.classList.contains('open')) closeModal();
+    });
+
+    // Toast 队列 + 全局状态展示
+    const toastStack = document.querySelector('#toast-stack');
+    const stateList = document.querySelector('#state-list');
+    const toastState = [];
+
+    function renderState() {
+      stateList.innerHTML = toastState.map((t, i) => `<li class="item"><span>${t.msg}</span><span class="badge">#${i + 1}</span></li>`).join('');
+    }
+
+    function showToast(message, kind = 'success', ttl = 2400) {
+      const toast = document.createElement('div');
+      toast.className = `toast ${kind}`;
+      toast.textContent = message;
+      toastStack.appendChild(toast);
+      toastState.push({ msg: message, kind });
+      renderState();
+      setTimeout(() => {
+        toast.remove();
+        toastState.shift();
+        renderState();
+      }, ttl);
+    }
+
+    document.querySelector('#toast-card').addEventListener('click', (event) => {
+      const btn = event.target.closest('button[data-toast]');
+      if (!btn) return;
+      const kind = btn.dataset.toast;
+      showToast(kind === 'success' ? '操作成功' : '发生错误', kind);
+    });
+  </script>
+</body>
+</html>

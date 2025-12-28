@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>第 19 步：性能与工程化</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #0b1220;
+      --card: #0f172a;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --border: #1f2937;
+      --danger: #f87171;
+      --success: #34d399;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 24px;
+    }
+    header { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 24px; }
+    a { color: var(--accent); text-decoration: none; }
+    .pill { display: inline-flex; align-items: center; gap: 8px; padding: 6px 10px; border: 1px solid var(--border); border-radius: 999px; background: rgba(56, 189, 248, 0.12); color: var(--accent); font-size: 14px; }
+    .tag { display: inline-block; padding: 2px 8px; border-radius: 999px; background: #1f2937; border: 1px solid var(--border); color: var(--muted); font-size: 12px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 16px; box-shadow: 0 12px 40px rgba(0, 0, 0, 0.24); }
+    .card h3 { margin: 0 0 6px; }
+    .muted { color: var(--muted); font-size: 14px; }
+    button { cursor: pointer; padding: 8px 12px; border-radius: 10px; border: 1px solid var(--border); background: #1f2937; color: var(--text); transition: transform 0.15s ease, border-color 0.15s ease; }
+    button:hover { transform: translateY(-1px); border-color: var(--accent); }
+    .row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    pre { background: #0c1628; border: 1px solid var(--border); border-radius: 10px; padding: 12px; overflow: auto; color: #c7d2fe; margin-top: 8px; }
+    .status { margin-top: 6px; font-size: 14px; }
+    .loading { color: var(--accent); }
+    .ok { color: var(--success); }
+    .error { color: var(--danger); }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <div class="pill">第 19 步 · 性能与工程化</div>
+      <div class="muted">配套教程：教程_JS_19_性能与工程化.md · 上一站：18_js_components_state.html</div>
+    </div>
+    <div class="row">
+      <a href="18_js_components_state.html" class="tag">返回第 18 步</a>
+      <a href="教程_JS_19_性能与工程化.md" class="tag">阅读教程</a>
+    </div>
+  </header>
+
+  <div class="grid">
+    <section class="card">
+      <h3>动态导入（代码分割）</h3>
+      <p class="muted">按需加载重型计算，减少首屏负载。</p>
+      <div class="row" style="margin-bottom:8px;">
+        <button id="btn-calc">加载并计算斐波那契</button>
+      </div>
+      <div class="status" id="calc-status"></div>
+      <pre id="calc-output"></pre>
+    </section>
+
+    <section class="card">
+      <h3>节流渲染（requestIdleCallback 回退）</h3>
+      <p class="muted">空闲时批量处理任务，避免卡顿。</p>
+      <div class="row" style="margin-bottom:8px;">
+        <button id="btn-schedule">安排 2000 条渲染</button>
+      </div>
+      <div class="status" id="idle-status"></div>
+      <pre id="idle-output"></pre>
+    </section>
+
+    <section class="card">
+      <h3>缓存与版本提示</h3>
+      <p class="muted">展示资源版本，模拟缓存命中。</p>
+      <div class="row" style="margin-bottom:8px;">
+        <button id="btn-cache">读取缓存</button>
+        <button id="btn-bust">强制刷新</button>
+      </div>
+      <div class="status" id="cache-status"></div>
+      <pre id="cache-output"></pre>
+    </section>
+  </div>
+
+  <script type="module">
+    // 动态导入：只在点击时加载重计算模块
+    const calcStatus = document.querySelector('#calc-status');
+    const calcOutput = document.querySelector('#calc-output');
+    document.querySelector('#btn-calc').addEventListener('click', async () => {
+      calcStatus.textContent = '加载模块中...';
+      calcStatus.className = 'status loading';
+      calcOutput.textContent = '';
+      try {
+        const { heavyFib } = await import('./js/chunk/heavy-math.js');
+        const t0 = performance.now();
+        const result = heavyFib(36); // 相对耗时，演示分割意义
+        const t1 = performance.now();
+        calcStatus.textContent = `完成，用时 ${(t1 - t0).toFixed(1)} ms`;
+        calcStatus.className = 'status ok';
+        calcOutput.textContent = `fib(36) = ${result}`;
+      } catch (err) {
+        calcStatus.textContent = `失败：${err.message}`;
+        calcStatus.className = 'status error';
+      }
+    });
+
+    // 空闲调度：在空闲时间分批处理任务
+    const idleStatus = document.querySelector('#idle-status');
+    const idleOutput = document.querySelector('#idle-output');
+    const tasks = Array.from({ length: 2000 }, (_, i) => `item-${i + 1}`);
+
+    function runBatched(list) {
+      idleStatus.textContent = '调度中...';
+      idleStatus.className = 'status loading';
+      idleOutput.textContent = '';
+      let processed = 0;
+      const batch = (deadline) => {
+        while ((deadline?.timeRemaining?.() ?? 0) > 0 && processed < list.length) {
+          processed += 1;
+        }
+        if (processed < list.length) {
+          const schedule = window.requestIdleCallback || function (fn) { return setTimeout(() => fn({ timeRemaining: () => 10 }), 16); };
+          schedule(batch);
+        } else {
+          idleStatus.textContent = `完成：${processed} 条`;
+          idleStatus.className = 'status ok';
+          idleOutput.textContent = `示例：${list.slice(0, 10).join(', ')} ...`;
+        }
+      };
+      const schedule = window.requestIdleCallback || function (fn) { return setTimeout(() => fn({ timeRemaining: () => 10 }), 16); };
+      schedule(batch);
+    }
+
+    document.querySelector('#btn-schedule').addEventListener('click', () => runBatched(tasks));
+
+    // 缓存模拟：版本号 + 本地存储
+    const cacheStatus = document.querySelector('#cache-status');
+    const cacheOutput = document.querySelector('#cache-output');
+    const VERSION = 'v1.0.0';
+    const STORAGE_KEY = 'demo-cache-version';
+
+    function readCache() {
+      const cached = localStorage.getItem(STORAGE_KEY);
+      cacheStatus.textContent = cached ? `命中版本：${cached}` : '未命中缓存';
+      cacheStatus.className = cached ? 'status ok' : 'status loading';
+      cacheOutput.textContent = JSON.stringify({ version: cached, time: new Date().toISOString() }, null, 2);
+    }
+
+    document.querySelector('#btn-cache').addEventListener('click', readCache);
+    document.querySelector('#btn-bust').addEventListener('click', () => {
+      localStorage.setItem(STORAGE_KEY, VERSION);
+      cacheStatus.textContent = `已写入版本：${VERSION}`;
+      cacheStatus.className = 'status ok';
+      cacheOutput.textContent = JSON.stringify({ version: VERSION, time: new Date().toISOString() }, null, 2);
+    });
+
+    // 初始读取
+    readCache();
+  </script>
+</body>
+</html>

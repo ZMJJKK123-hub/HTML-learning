@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>表单完全教程 - 从基础到实战</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        section {
+            background: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #667eea;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 0.5rem;
+        }
+        h3 {
+            color: #764ba2;
+            margin-top: 1.5rem;
+        }
+        .code-box {
+            background: #f4f4f4;
+            border-left: 4px solid #667eea;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+        .demo-box {
+            background: #f0f7ff;
+            border: 2px solid #667eea;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        .note {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        
+        /* 表单样式 */
+        form {
+            margin: 1.5rem 0;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="number"],
+        input[type="tel"],
+        input[type="url"],
+        input[type="date"],
+        input[type="time"],
+        input[type="datetime-local"],
+        input[type="search"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+        
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        input[type="radio"],
+        input[type="checkbox"] {
+            margin-right: 0.5rem;
+        }
+        
+        .radio-group,
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .inline-options {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        button,
+        input[type="submit"],
+        input[type="reset"],
+        input[type="button"] {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background-color 0.3s;
+        }
+        
+        button[type="submit"],
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+        button[type="submit"]:hover,
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        
+        button[type="reset"],
+        input[type="reset"] {
+            background-color: #f44336;
+            color: white;
+            margin-left: 0.5rem;
+        }
+        
+        button[type="reset"]:hover,
+        input[type="reset"]:hover {
+            background-color: #da190b;
+        }
+        
+        button[type="button"],
+        input[type="button"] {
+            background-color: #667eea;
+            color: white;
+        }
+        
+        button[type="button"]:hover,
+        input[type="button"]:hover {
+            background-color: #5568d3;
+        }
+        
+        .required {
+            color: #f44336;
+        }
+        
+        input:invalid {
+            border-color: #f44336;
+        }
+        
+        input:valid {
+            border-color: #4CAF50;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        fieldset {
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        legend {
+            padding: 0 0.5rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .input-group {
+            display: flex;
+            align-items: center;
+        }
+        
+        .input-group input {
+            border-radius: 4px 0 0 4px;
+        }
+        
+        .input-group-append {
+            background-color: #667eea;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 0 4px 4px 0;
+            border: 1px solid #667eea;
+        }
+        
+        .success-message {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 1rem;
+            border-radius: 4px;
+            margin: 1rem 0;
+            display: none;
+        }
+        
+        .error-message {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 1rem;
+            border-radius: 4px;
+            margin: 1rem 0;
+        }
+        
+        .hint {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 0.25rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>📝 表单完全教程</h1>
+        <p>学习 HTML 表单：从基础输入到实战应用</p>
+    </header>
+
+    <main>
+        
+        <!-- 第 1 部分：表单基础 -->
+        <section id="basic">
+            <h2>第 1 部分：表单基础</h2>
+
+            <h3>什么是表单？</h3>
+            <p>表单是用户与网站交互的主要方式，用于收集用户输入的数据。</p>
+
+            <div class="note">
+                <strong>常见的表单应用：</strong>
+                <ul>
+                    <li>登录 / 注册</li>
+                    <li>搜索框</li>
+                    <li>联系表单</li>
+                    <li>调查问卷</li>
+                    <li>在线支付</li>
+                    <li>评论留言</li>
+                </ul>
+            </div>
+
+            <h3>基本表单结构</h3>
+            <div class="code-box">
+&lt;form action="/submit" method="post"&gt;
+    &lt;!-- 表单内容 --&gt;
+&lt;/form&gt;
+            </div>
+
+            <div class="note">
+                <strong>重要属性：</strong>
+                <ul>
+                    <li><code>action</code> - 表单提交的目标地址（服务器端）</li>
+                    <li><code>method</code> - 提交方式：<code>get</code> 或 <code>post</code></li>
+                    <li><code>name</code> - 表单的名称</li>
+                </ul>
+            </div>
+
+            <h3>最简单的表单</h3>
+            <div class="demo-box">
+                <form>
+                    <label for="username">用户名：</label>
+                    <input type="text" id="username" name="username">
+                    <br><br>
+                    <button type="submit">提交</button>
+                </form>
+            </div>
+
+        </section>
+
+        <!-- 第 2 部分：文本输入 -->
+        <section id="text-inputs">
+            <h2>第 2 部分：文本输入类型</h2>
+
+            <h3>1. 普通文本框 (text)</h3>
+            <div class="demo-box">
+                <div class="form-group">
+                    <label for="text-demo">姓名：</label>
+                    <input type="text" id="text-demo" name="name" placeholder="请输入你的姓名">
+                </div>
+            </div>
+            <div class="code-box">
+&lt;input type="text" name="name" placeholder="请输入你的姓名"&gt;
+            </div>
+
+            <h3>2. 密码框 (password)</h3>
+            <div class="demo-box">
+                <div class="form-group">
+                    <label for="password-demo">密码：</label>
+                    <input type="password" id="password-demo" name="password" placeholder="请输入密码">
+                </div>
+            </div>
+            <div class="code-box">
+&lt;input type="password" name="password" placeholder="请输入密码"&gt;
+            </div>
+
+            <h3>3. 邮箱 (email)</h3>
+            <div class="demo-box">
+                <div class="form-group">
+                    <label for="email-demo">邮箱：</label>
+                    <input type="email" id="email-demo" name="email" placeholder="example@email.com">
+                    <div class="hint">会自动验证邮箱格式</div>
+                </div>
+            </div>
+            <div class="code-box">
+&lt;input type="email" name="email" placeholder="example@email.com"&gt;
+            </div>
+
+            <h3>4. 数字 (number)</h3>
+            <div class="demo-box">
+                <div class="form-group">
+                    <label for="number-demo">年龄：</label>
+                    <input type="number" id="number-demo" name="age" min="1" max="120" placeholder="18">
+                    <div class="hint">可以设置 min 和 max 限制范围</div>
+                </div>
+            </div>
+            <div class="code-box">
+&lt;input type="number" name="age" min="1" max="120"&gt;
+            </div>
+
+            <h3>5. 电话 (tel)</h3>
+            <div class="demo-box">
+                <div class="form-group">
+                    <label for="tel-demo">电话：</label>
+                    <input type="tel" id="tel-demo" name="phone" placeholder="138-0000-0000">
+                </div>
+            </div>
+            <div class="code-box">
+&lt;input type="tel" name="phone" placeholder="138-0000-0000"&gt;
+            </div>
+
+            <h3>6. 网址 (url)</h3>
+            <div class="demo-box">
+                <div class="form-group">
+                    <label for="url-demo">网站：</label>
+                    <input type="url" id="url-demo" name="website" placeholder="https://example.com">
+                    <div class="hint">会自动验证网址格式</div>
+                </div>
+            </div>
+
+            <h3>7. 搜索框 (search)</h3>
+            <div class="demo-box">
+                <div class="form-group">
+                    <label for="search-demo">搜索：</label>
+                    <input type="search" id="search-demo" name="search" placeholder="输入关键词...">
+                </div>
+            </div>
+
+        </section>
+
+        <!-- 第 3 部分：日期和时间 -->
+        <section id="date-time">
+            <h2>第 3 部分：日期和时间输入</h2>
+
+            <h3>1. 日期 (date)</h3>
+            <div class="demo-box">
+                <div class="form-group">
+                    <label for="date-demo">选择日期：</label>
+                    <input type="date" id="date-demo" name="birthday">
+                </div>
+            </div>
+            <div class="code-box">
+&lt;input type="date" name="birthday"&gt;
+            </div>
+
+            <h3>2. 时间 (time)</h3>
+            <div class="demo-box">
+                <div class="form-group">
+                    <label for="time-demo">选择时间：</label>
+                    <input type="time" id="time-demo" name="appointment">
+                </div>
+            </div>
+
+            <h3>3. 日期时间 (datetime-local)</h3>
+            <div class="demo-box">
+                <div class="form-group">
+                    <label for="datetime-demo">选择日期和时间：</label>
+                    <input type="datetime-local" id="datetime-demo" name="meeting">
+                </div>
+            </div>
+
+            <h3>4. 月份 (month)</h3>
+            <div class="demo-box">
+                <div class="form-group">
+                    <label for="month-demo">选择月份：</label>
+                    <input type="month" id="month-demo" name="month">
+                </div>
+            </div>
+
+            <h3>5. 星期 (week)</h3>
+            <div class="demo-box">
+                <div class="form-group">
+                    <label for="week-demo">选择星期：</label>
+                    <input type="week" id="week-demo" name="week">
+                </div>
+            </div>
+
+        </section>
+
+        <!-- 第 4 部分：选择输入 -->
+        <section id="selections">
+            <h2>第 4 部分：选择输入</h2>
+
+            <h3>1. 单选按钮 (radio)</h3>
+            <div class="demo-box">
+                <fieldset>
+                    <legend>性别</legend>
+                    <div class="radio-group">
+                        <label>
+                            <input type="radio" name="gender" value="male" checked>
+                            男
+                        </label>
+                        <label>
+                            <input type="radio" name="gender" value="female">
+                            女
+                        </label>
+                        <label>
+                            <input type="radio" name="gender" value="other">
+                            其他
+                        </label>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="code-box">
+&lt;input type="radio" name="gender" value="male" checked&gt; 男
+&lt;input type="radio" name="gender" value="female"&gt; 女
+&lt;input type="radio" name="gender" value="other"&gt; 其他
+            </div>
+            <div class="note">
+                <strong>注意：</strong>同一组单选按钮必须有相同的 <code>name</code> 属性！
+            </div>
+
+            <h3>2. 复选框 (checkbox)</h3>
+            <div class="demo-box">
+                <fieldset>
+                    <legend>兴趣爱好</legend>
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" name="hobbies" value="reading">
+                            阅读
+                        </label>
+                        <label>
+                            <input type="checkbox" name="hobbies" value="sports">
+                            运动
+                        </label>
+                        <label>
+                            <input type="checkbox" name="hobbies" value="music">
+                            音乐
+                        </label>
+                        <label>
+                            <input type="checkbox" name="hobbies" value="travel">
+                            旅行
+                        </label>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="code-box">
+&lt;input type="checkbox" name="hobbies" value="reading"&gt; 阅读
+&lt;input type="checkbox" name="hobbies" value="sports"&gt; 运动
+&lt;input type="checkbox" name="hobbies" value="music"&gt; 音乐
+            </div>
+
+            <h3>3. 下拉选择框 (select)</h3>
+            <div class="demo-box">
+                <div class="form-group">
+                    <label for="city-select">选择城市：</label>
+                    <select id="city-select" name="city">
+                        <option value="">--请选择--</option>
+                        <option value="beijing">北京</option>
+                        <option value="shanghai">上海</option>
+                        <option value="guangzhou">广州</option>
+                        <option value="shenzhen">深圳</option>
+                    </select>
+                </div>
+            </div>
+            <div class="code-box">
+&lt;select name="city"&gt;
+    &lt;option value=""&gt;--请选择--&lt;/option&gt;
+    &lt;option value="beijing"&gt;北京&lt;/option&gt;
+    &lt;option value="shanghai"&gt;上海&lt;/option&gt;
+&lt;/select&gt;
+            </div>
+
+            <h3>4. 多选下拉框</h3>
+            <div class="demo-box">
+                <div class="form-group">
+                    <label for="languages-select">选择语言（按住 Ctrl 多选）：</label>
+                    <select id="languages-select" name="languages" multiple size="5">
+                        <option value="html">HTML</option>
+                        <option value="css">CSS</option>
+                        <option value="javascript">JavaScript</option>
+                        <option value="python">Python</option>
+                        <option value="java">Java</option>
+                    </select>
+                </div>
+            </div>
+            <div class="code-box">
+&lt;select name="languages" multiple size="5"&gt;
+    &lt;option value="html"&gt;HTML&lt;/option&gt;
+    &lt;option value="css"&gt;CSS&lt;/option&gt;
+&lt;/select&gt;
+            </div>
+
+            <h3>5. 分组选择框 (optgroup)</h3>
+            <div class="demo-box">
+                <div class="form-group">
+                    <label for="country-select">选择国家：</label>
+                    <select id="country-select" name="country">
+                        <optgroup label="亚洲">
+                            <option value="china">中国</option>
+                            <option value="japan">日本</option>
+                            <option value="korea">韩国</option>
+                        </optgroup>
+                        <optgroup label="欧洲">
+                            <option value="uk">英国</option>
+                            <option value="france">法国</option>
+                            <option value="germany">德国</option>
+                        </optgroup>
+                    </select>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- 第 5 部分：文本域和其他输入 -->
+        <section id="textarea-others">
+            <h2>第 5 部分：文本域和其他输入</h2>
+
+            <h3>1. 文本域 (textarea)</h3>
+            <div class="demo-box">
+                <div class="form-group">
+                    <label for="message-demo">留言：</label>
+                    <textarea id="message-demo" name="message" rows="5" placeholder="请输入你的留言..."></textarea>
+                </div>
+            </div>
+            <div class="code-box">
+&lt;textarea name="message" rows="5" cols="50"&gt;&lt;/textarea&gt;
+            </div>
+
+            <h3>2. 文件上传 (file)</h3>
+            <div class="demo-box">
+                <div class="form-group">
+                    <label for="file-demo">上传文件：</label>
+                    <input type="file" id="file-demo" name="avatar">
+                </div>
+                <div class="form-group">
+                    <label for="files-demo">上传多个文件：</label>
+                    <input type="file" id="files-demo" name="documents" multiple>
+                </div>
+                <div class="form-group">
+                    <label for="image-demo">上传图片：</label>
+                    <input type="file" id="image-demo" name="photo" accept="image/*">
+                </div>
+            </div>
+            <div class="code-box">
+&lt;!-- 单个文件 --&gt;
+&lt;input type="file" name="avatar"&gt;
+
+&lt;!-- 多个文件 --&gt;
+&lt;input type="file" name="documents" multiple&gt;
+
+&lt;!-- 只接受图片 --&gt;
+&lt;input type="file" name="photo" accept="image/*"&gt;
+            </div>
+
+            <h3>3. 颜色选择器 (color)</h3>
+            <div class="demo-box">
+                <div class="form-group">
+                    <label for="color-demo">选择颜色：</label>
+                    <input type="color" id="color-demo" name="favorite-color" value="#667eea">
+                </div>
+            </div>
+
+            <h3>4. 范围滑块 (range)</h3>
+            <div class="demo-box">
+                <div class="form-group">
+                    <label for="range-demo">音量：</label>
+                    <input type="range" id="range-demo" name="volume" min="0" max="100" value="50">
+                    <div class="hint">当前值：<span id="range-value">50</span></div>
+                </div>
+            </div>
+            <div class="code-box">
+&lt;input type="range" name="volume" min="0" max="100" value="50"&gt;
+            </div>
+
+            <h3>5. 隐藏字段 (hidden)</h3>
+            <div class="demo-box">
+                <input type="hidden" name="user_id" value="12345">
+                <p style="color: #666; font-size: 0.9rem;">
+                    隐藏字段不会显示在页面上，但会随表单提交
+                </p>
+            </div>
+            <div class="code-box">
+&lt;input type="hidden" name="user_id" value="12345"&gt;
+            </div>
+
+        </section>
+
+        <!-- 第 6 部分：按钮 -->
+        <section id="buttons">
+            <h2>第 6 部分：按钮类型</h2>
+
+            <h3>1. 提交按钮 (submit)</h3>
+            <div class="demo-box">
+                <button type="submit">提交表单</button>
+                <input type="submit" value="提交表单" style="margin-left: 1rem;">
+            </div>
+            <div class="code-box">
+&lt;button type="submit"&gt;提交表单&lt;/button&gt;
+&lt;input type="submit" value="提交表单"&gt;
+            </div>
+
+            <h3>2. 重置按钮 (reset)</h3>
+            <div class="demo-box">
+                <button type="reset">重置表单</button>
+                <input type="reset" value="重置表单" style="margin-left: 1rem;">
+            </div>
+            <div class="code-box">
+&lt;button type="reset"&gt;重置表单&lt;/button&gt;
+&lt;input type="reset" value="重置表单"&gt;
+            </div>
+
+            <h3>3. 普通按钮 (button)</h3>
+            <div class="demo-box">
+                <button type="button" onclick="alert('按钮被点击了！')">点击我</button>
+                <input type="button" value="点击我" onclick="alert('按钮被点击了！')" style="margin-left: 1rem;">
+            </div>
+            <div class="code-box">
+&lt;button type="button" onclick="alert('点击！')"&gt;点击我&lt;/button&gt;
+&lt;input type="button" value="点击我"&gt;
+            </div>
+
+            <div class="note">
+                <strong>区别：</strong>
+                <ul>
+                    <li><code>&lt;button&gt;</code> - 可以包含 HTML 内容（图标、图片等）</li>
+                    <li><code>&lt;input type="button"&gt;</code> - 只能显示纯文本</li>
+                </ul>
+            </div>
+
+        </section>
+
+        <!-- 第 7 部分：表单属性 -->
+        <section id="attributes">
+            <h2>第 7 部分：重要属性</h2>
+
+            <h3>1. required - 必填项</h3>
+            <div class="demo-box">
+                <form>
+                    <div class="form-group">
+                        <label for="required-demo">
+                            用户名 <span class="required">*</span>
+                        </label>
+                        <input type="text" id="required-demo" name="username" required>
+                    </div>
+                    <button type="submit">提交</button>
+                </form>
+                <p style="color: #666; font-size: 0.9rem; margin-top: 1rem;">
+                    尝试不填写直接提交，浏览器会提示错误
+                </p>
+            </div>
+            <div class="code-box">
+&lt;input type="text" name="username" required&gt;
+            </div>
+
+            <h3>2. placeholder - 占位符</h3>
+            <div class="demo-box">
+                <input type="text" placeholder="请输入你的姓名" style="width: 100%; padding: 10px;">
+            </div>
+            <div class="code-box">
+&lt;input type="text" placeholder="请输入你的姓名"&gt;
+            </div>
+
+            <h3>3. maxlength - 最大长度</h3>
+            <div class="demo-box">
+                <div class="form-group">
+                    <label for="maxlength-demo">验证码（最多 6 位）：</label>
+                    <input type="text" id="maxlength-demo" maxlength="6" placeholder="6 位验证码">
+                </div>
+            </div>
+
+            <h3>4. minlength - 最小长度</h3>
+            <div class="demo-box">
+                <div class="form-group">
+                    <label for="minlength-demo">密码（至少 8 位）：</label>
+                    <input type="password" id="minlength-demo" minlength="8" placeholder="至少 8 位">
+                </div>
+            </div>
+
+            <h3>5. pattern - 正则表达式验证</h3>
+            <div class="demo-box">
+                <div class="form-group">
+                    <label for="pattern-demo">手机号（11 位数字）：</label>
+                    <input type="text" id="pattern-demo" pattern="[0-9]{11}" placeholder="13800138000">
+                    <div class="hint">必须是 11 位数字</div>
+                </div>
+            </div>
+            <div class="code-box">
+&lt;input type="text" pattern="[0-9]{11}" placeholder="13800138000"&gt;
+            </div>
+
+            <h3>6. disabled - 禁用</h3>
+            <div class="demo-box">
+                <input type="text" value="这个输入框被禁用了" disabled style="width: 100%; padding: 10px;">
+            </div>
+            <div class="code-box">
+&lt;input type="text" disabled&gt;
+            </div>
+
+            <h3>7. readonly - 只读</h3>
+            <div class="demo-box">
+                <input type="text" value="这个输入框是只读的" readonly style="width: 100%; padding: 10px;">
+            </div>
+            <div class="code-box">
+&lt;input type="text" readonly&gt;
+            </div>
+
+            <h3>8. autocomplete - 自动完成</h3>
+            <div class="demo-box">
+                <div class="form-group">
+                    <label for="autocomplete-on">开启自动完成：</label>
+                    <input type="text" id="autocomplete-on" name="name" autocomplete="on">
+                </div>
+                <div class="form-group">
+                    <label for="autocomplete-off">关闭自动完成：</label>
+                    <input type="text" id="autocomplete-off" name="secret" autocomplete="off">
+                </div>
+            </div>
+
+        </section>
+
+        <!-- 第 8 部分：实际应用 -->
+        <section id="examples">
+            <h2>第 8 部分：实际应用示例</h2>
+
+            <h3>示例 1：登录表单</h3>
+            <div class="demo-box">
+                <form>
+                    <h3>用户登录</h3>
+                    <div class="form-group">
+                        <label for="login-email">
+                            邮箱 <span class="required">*</span>
+                        </label>
+                        <input type="email" id="login-email" name="email" required placeholder="your@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">
+                            密码 <span class="required">*</span>
+                        </label>
+                        <input type="password" id="login-password" name="password" required placeholder="至少 8 位" minlength="8">
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" name="remember">
+                            记住我
+                        </label>
+                    </div>
+                    <button type="submit">登录</button>
+                    <button type="button" style="background-color: #999;">忘记密码？</button>
+                </form>
+            </div>
+
+            <h3>示例 2：注册表单</h3>
+            <div class="demo-box">
+                <form>
+                    <h3>用户注册</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="reg-firstname">名 <span class="required">*</span></label>
+                            <input type="text" id="reg-firstname" name="firstname" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="reg-lastname">姓 <span class="required">*</span></label>
+                            <input type="text" id="reg-lastname" name="lastname" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-email">邮箱 <span class="required">*</span></label>
+                        <input type="email" id="reg-email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-password">密码 <span class="required">*</span></label>
+                        <input type="password" id="reg-password" name="password" required minlength="8">
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-confirm">确认密码 <span class="required">*</span></label>
+                        <input type="password" id="reg-confirm" name="confirm" required minlength="8">
+                    </div>
+                    <fieldset>
+                        <legend>性别</legend>
+                        <div class="inline-options">
+                            <label><input type="radio" name="gender" value="male"> 男</label>
+                            <label><input type="radio" name="gender" value="female"> 女</label>
+                            <label><input type="radio" name="gender" value="other"> 其他</label>
+                        </div>
+                    </fieldset>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" name="agree" required>
+                            我同意<a href="#">服务条款</a>和<a href="#">隐私政策</a> <span class="required">*</span>
+                        </label>
+                    </div>
+                    <button type="submit">注册</button>
+                </form>
+            </div>
+
+            <h3>示例 3：联系表单</h3>
+            <div class="demo-box">
+                <form>
+                    <h3>联系我们</h3>
+                    <div class="form-group">
+                        <label for="contact-name">姓名 <span class="required">*</span></label>
+                        <input type="text" id="contact-name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-email">邮箱 <span class="required">*</span></label>
+                        <input type="email" id="contact-email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-subject">主题</label>
+                        <select id="contact-subject" name="subject">
+                            <option value="">--请选择--</option>
+                            <option value="general">一般咨询</option>
+                            <option value="support">技术支持</option>
+                            <option value="sales">销售咨询</option>
+                            <option value="other">其他</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-message">消息 <span class="required">*</span></label>
+                        <textarea id="contact-message" name="message" rows="5" required placeholder="请输入你的消息..."></textarea>
+                    </div>
+                    <button type="submit">发送</button>
+                    <button type="reset">清空</button>
+                </form>
+            </div>
+
+            <h3>示例 4：调查问卷</h3>
+            <div class="demo-box">
+                <form>
+                    <h3>用户满意度调查</h3>
+                    
+                    <div class="form-group">
+                        <label for="survey-name">姓名：</label>
+                        <input type="text" id="survey-name" name="name">
+                    </div>
+                    
+                    <fieldset>
+                        <legend>您的年龄段</legend>
+                        <div class="radio-group">
+                            <label><input type="radio" name="age" value="18-25"> 18-25</label>
+                            <label><input type="radio" name="age" value="26-35"> 26-35</label>
+                            <label><input type="radio" name="age" value="36-50"> 36-50</label>
+                            <label><input type="radio" name="age" value="50+"> 50+</label>
+                        </div>
+                    </fieldset>
+                    
+                    <fieldset>
+                        <legend>对我们的服务满意吗？</legend>
+                        <div class="radio-group">
+                            <label><input type="radio" name="satisfaction" value="5"> ⭐⭐⭐⭐⭐ 非常满意</label>
+                            <label><input type="radio" name="satisfaction" value="4"> ⭐⭐⭐⭐ 满意</label>
+                            <label><input type="radio" name="satisfaction" value="3"> ⭐⭐⭐ 一般</label>
+                            <label><input type="radio" name="satisfaction" value="2"> ⭐⭐ 不满意</label>
+                            <label><input type="radio" name="satisfaction" value="1"> ⭐ 非常不满意</label>
+                        </div>
+                    </fieldset>
+                    
+                    <fieldset>
+                        <legend>您使用哪些功能？（多选）</legend>
+                        <div class="checkbox-group">
+                            <label><input type="checkbox" name="features" value="search"> 搜索</label>
+                            <label><input type="checkbox" name="features" value="cart"> 购物车</label>
+                            <label><input type="checkbox" name="features" value="payment"> 在线支付</label>
+                            <label><input type="checkbox" name="features" value="review"> 评论</label>
+                        </div>
+                    </fieldset>
+                    
+                    <div class="form-group">
+                        <label for="survey-feedback">您的建议：</label>
+                        <textarea id="survey-feedback" name="feedback" rows="4" placeholder="请告诉我们您的想法..."></textarea>
+                    </div>
+                    
+                    <button type="submit">提交问卷</button>
+                </form>
+            </div>
+
+        </section>
+
+        <!-- 第 9 部分：最佳实践 -->
+        <section id="best-practices">
+            <h2>第 9 部分：最佳实践</h2>
+
+            <h3>✅ 好的做法</h3>
+
+            <div class="note">
+                <h4>1. 始终使用 &lt;label&gt; 标签</h4>
+                <div class="code-box">
+&lt;!-- ✅ 好：使用 label --&gt;
+&lt;label for="username"&gt;用户名：&lt;/label&gt;
+&lt;input type="text" id="username" name="username"&gt;
+
+&lt;!-- ❌ 差：没有 label --&gt;
+用户名：&lt;input type="text" name="username"&gt;
+                </div>
+                <p><strong>好处：</strong></p>
+                <ul>
+                    <li>点击标签文字也能聚焦到输入框</li>
+                    <li>屏幕阅读器能理解</li>
+                    <li>更好的用户体验</li>
+                </ul>
+            </div>
+
+            <div class="note">
+                <h4>2. 使用合适的输入类型</h4>
+                <div class="code-box">
+&lt;!-- ✅ 好：使用 email 类型 --&gt;
+&lt;input type="email" name="email"&gt;
+
+&lt;!-- ❌ 差：用 text 类型 --&gt;
+&lt;input type="text" name="email"&gt;
+                </div>
+                <p><strong>好处：</strong></p>
+                <ul>
+                    <li>自动验证格式</li>
+                    <li>手机上会显示专用键盘</li>
+                    <li>更好的用户体验</li>
+                </ul>
+            </div>
+
+            <div class="note">
+                <h4>3. 提供清晰的提示</h4>
+                <div class="code-box">
+&lt;!-- ✅ 好：有 placeholder 和提示 --&gt;
+&lt;label for="password"&gt;密码：&lt;/label&gt;
+&lt;input type="password" id="password" placeholder="至少 8 位" minlength="8"&gt;
+&lt;small&gt;密码必须包含字母和数字&lt;/small&gt;
+                </div>
+            </div>
+
+            <div class="note">
+                <h4>4. 标记必填项</h4>
+                <div class="code-box">
+&lt;label for="email"&gt;
+    邮箱 &lt;span style="color: red;"&gt;*&lt;/span&gt;
+&lt;/label&gt;
+&lt;input type="email" id="email" required&gt;
+                </div>
+            </div>
+
+            <h3>❌ 避免的做法</h3>
+
+            <div class="error-message">
+                <h4>1. 不要使用过多的必填项</h4>
+                <p>❌ 错误：要求用户填写 20 个必填项</p>
+                <p>✅ 正确：只要求必要的信息，其他的设为可选</p>
+            </div>
+
+            <div class="error-message">
+                <h4>2. 不要使用模糊的提示</h4>
+                <p>❌ 错误："请输入正确的格式"（什么格式？）</p>
+                <p>✅ 正确："请输入 11 位手机号，例如：13800138000"</p>
+            </div>
+
+            <div class="error-message">
+                <h4>3. 不要禁用复制粘贴</h4>
+                <p>❌ 错误：在密码确认框禁用粘贴</p>
+                <p>✅ 正确：允许用户使用密码管理器</p>
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer style="text-align: center; padding: 2rem; background: #333; color: white; margin-top: 2rem;">
+        <p>&copy; 2024 表单完全教程</p>
+        <p>掌握表单，让网站更具交互性！</p>
+    </footer>
+
+    <script>
+        // 范围滑块实时显示值
+        const rangeInput = document.getElementById('range-demo');
+        const rangeValue = document.getElementById('range-value');
+        
+        if (rangeInput && rangeValue) {
+            rangeInput.addEventListener('input', function() {
+                rangeValue.textContent = this.value;
+            });
+        }
+        
+        // 阻止表单实际提交（仅用于演示）
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('表单提交成功！（这只是演示，实际上没有提交到服务器）');
+            });
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>第 16 步：DOM 与事件</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #0b1220;
+      --card: #0f172a;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --border: #1f2937;
+      --danger: #f87171;
+      --success: #34d399;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 24px;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.12);
+      color: var(--accent);
+      font-size: 14px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.24);
+    }
+    .card h3 { margin: 0 0 6px; }
+    .muted { color: var(--muted); font-size: 14px; }
+    button {
+      cursor: pointer;
+      padding: 8px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #1f2937;
+      color: var(--text);
+      transition: transform 0.15s ease, border-color 0.15s ease;
+    }
+    button:hover { transform: translateY(-1px); border-color: var(--accent); }
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #111827;
+      color: var(--text);
+    }
+    .row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    ul { padding-left: 18px; }
+    li { margin: 4px 0; }
+    .tag { display: inline-block; padding: 2px 8px; border-radius: 999px; background: #1f2937; border: 1px solid var(--border); color: var(--muted); font-size: 12px; }
+    .output { margin-top: 8px; font-weight: 600; }
+    .status { margin-top: 8px; font-size: 14px; }
+    .error { color: var(--danger); }
+    .ok { color: var(--success); }
+    .divider { height: 1px; background: var(--border); margin: 10px 0; }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <div class="pill">第 16 步 · DOM 与事件</div>
+      <div class="muted">配套教程：教程_JS_16_DOM与事件.md · 上一站：15_js_basics.html</div>
+    </div>
+    <div class="row">
+      <a href="15_js_basics.html" class="tag">返回第 15 步</a>
+      <a href="教程_JS_16_DOM与事件.md" class="tag">阅读教程</a>
+    </div>
+  </header>
+
+  <div class="grid">
+    <section class="card" id="dom-card">
+      <h3>DOM 选择与更新</h3>
+      <p class="muted">querySelector、textContent、classList。</p>
+      <div class="output" id="dom-text">欢迎！点击按钮更新内容。</div>
+      <div class="row" style="margin-top:8px;">
+        <button id="btn-update">更新文本</button>
+        <button id="btn-toggle">切换高亮</button>
+      </div>
+    </section>
+
+    <section class="card" id="todo-card">
+      <h3>事件与委托</h3>
+      <p class="muted">在容器上监听，利用事件冒泡。</p>
+      <div class="row" style="margin-bottom:8px;">
+        <input id="todo-input" placeholder="输入待办..." />
+        <button id="btn-add">添加</button>
+      </div>
+      <ul id="todo-list"></ul>
+      <div class="output" id="todo-count"></div>
+    </section>
+
+    <section class="card" id="form-card">
+      <h3>表单与校验</h3>
+      <p class="muted">阻止默认提交，显示错误/成功状态。</p>
+      <form id="contact-form">
+        <input id="email" name="email" type="email" placeholder="邮箱" autocomplete="email" />
+        <div class="divider"></div>
+        <textarea id="message" name="message" rows="3" placeholder="留言（至少 10 字）"></textarea>
+        <div class="muted" id="msg-count">0 / 200</div>
+        <div class="row" style="margin-top:8px;">
+          <button type="submit">提交</button>
+          <button type="button" id="btn-reset">重置</button>
+        </div>
+      </form>
+      <div class="status" id="form-status"></div>
+    </section>
+
+    <section class="card" id="debounce-card">
+      <h3>节流 / 防抖</h3>
+      <p class="muted">输入延迟处理，减轻频繁事件压力。</p>
+      <input id="search" placeholder="输入关键字（300ms 防抖）" />
+      <div class="output" id="instant"></div>
+      <div class="muted" id="debounced"></div>
+    </section>
+  </div>
+
+  <script type="module">
+    // DOM 选择与更新
+    const domText = document.querySelector('#dom-text');
+    const btnUpdate = document.querySelector('#btn-update');
+    const btnToggle = document.querySelector('#btn-toggle');
+    btnUpdate.addEventListener('click', () => {
+      const now = new Date().toLocaleTimeString();
+      domText.textContent = `已更新：${now}`;
+    });
+    btnToggle.addEventListener('click', () => {
+      domText.classList.toggle('highlight');
+      domText.style.color = domText.classList.contains('highlight') ? '#38bdf8' : 'var(--text)';
+    });
+
+    // 事件委托的待办列表示例
+    const todoInput = document.querySelector('#todo-input');
+    const todoList = document.querySelector('#todo-list');
+    const todoCount = document.querySelector('#todo-count');
+
+    const state = { items: [] };
+
+    function renderTodos() {
+      todoList.innerHTML = state.items
+        .map(item => `<li data-id="${item.id}">${item.text} <button class="remove" data-id="${item.id}">删除</button></li>`)
+        .join('');
+      todoCount.textContent = `共 ${state.items.length} 项`;
+    }
+
+    document.querySelector('#btn-add').addEventListener('click', () => {
+      const text = todoInput.value.trim();
+      if (!text) return;
+      state.items.push({ id: crypto.randomUUID(), text });
+      todoInput.value = '';
+      renderTodos();
+    });
+
+    todoList.addEventListener('click', (event) => {
+      const target = event.target;
+      if (target.matches('button.remove')) {
+        const id = target.dataset.id;
+        state.items = state.items.filter(item => item.id !== id);
+        renderTodos();
+      }
+    });
+
+    // 表单与校验
+    const form = document.querySelector('#contact-form');
+    const email = document.querySelector('#email');
+    const message = document.querySelector('#message');
+    const msgCount = document.querySelector('#msg-count');
+    const formStatus = document.querySelector('#form-status');
+
+    const maxLen = 200;
+    const minLen = 10;
+
+    const updateCount = () => {
+      const len = message.value.length;
+      msgCount.textContent = `${len} / ${maxLen}`;
+    };
+    message.addEventListener('input', updateCount);
+    updateCount();
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const value = message.value.trim();
+      if (!email.value.includes('@')) {
+        formStatus.textContent = '请填写有效邮箱';
+        formStatus.className = 'status error';
+        return;
+      }
+      if (value.length < minLen) {
+        formStatus.textContent = `留言需至少 ${minLen} 字`; 
+        formStatus.className = 'status error';
+        return;
+      }
+      formStatus.textContent = '提交成功！(模拟)';
+      formStatus.className = 'status ok';
+    });
+
+    document.querySelector('#btn-reset').addEventListener('click', () => {
+      form.reset();
+      formStatus.textContent = '';
+      updateCount();
+    });
+
+    // 防抖示例
+    const search = document.querySelector('#search');
+    const instant = document.querySelector('#instant');
+    const debounced = document.querySelector('#debounced');
+
+    function debounce(fn, delay = 300) {
+      let timer = null;
+      return (...args) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => fn(...args), delay);
+      };
+    }
+
+    const handleDebounced = debounce((value) => {
+      debounced.textContent = `防抖输出：${value || '（空）'}`;
+    }, 300);
+
+    search.addEventListener('input', (event) => {
+      const value = event.target.value;
+      instant.textContent = `即时值：${value || '（空）'}`;
+      handleDebounced(value);
+    });
+  </script>
+</body>
+</html>

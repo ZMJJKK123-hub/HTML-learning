@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>第 20 步：综合项目（JS + CSS + 状态）</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #0b1220;
+      --card: #0f172a;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --border: #1f2937;
+      --danger: #f87171;
+      --success: #34d399;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 24px;
+    }
+    header { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 24px; }
+    a { color: var(--accent); text-decoration: none; }
+    .pill { display: inline-flex; align-items: center; gap: 8px; padding: 6px 10px; border: 1px solid var(--border); border-radius: 999px; background: rgba(56, 189, 248, 0.12); color: var(--accent); font-size: 14px; }
+    .tag { display: inline-block; padding: 2px 8px; border-radius: 999px; background: #1f2937; border: 1px solid var(--border); color: var(--muted); font-size: 12px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 16px; box-shadow: 0 12px 40px rgba(0, 0, 0, 0.24); }
+    .card h3 { margin: 0 0 6px; }
+    .muted { color: var(--muted); font-size: 14px; }
+    button { cursor: pointer; padding: 8px 12px; border-radius: 10px; border: 1px solid var(--border); background: #1f2937; color: var(--text); transition: transform 0.15s ease, border-color 0.15s ease; }
+    button:hover { transform: translateY(-1px); border-color: var(--accent); }
+    input, select, textarea { width: 100%; padding: 10px; border-radius: 10px; border: 1px solid var(--border); background: #111827; color: var(--text); }
+    .row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .tab-list { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+    .tab { padding: 8px 12px; border-radius: 10px; border: 1px solid var(--border); background: #111827; color: var(--text); }
+    .tab[aria-selected="true"] { border-color: var(--accent); color: var(--accent); }
+    .panel { display: none; }
+    .panel.active { display: block; }
+    ul { padding-left: 18px; }
+    li { margin: 4px 0; }
+    .toast-stack { position: fixed; right: 16px; bottom: 16px; display: flex; flex-direction: column; gap: 10px; }
+    .toast { background: #111827; border: 1px solid var(--border); border-radius: 12px; padding: 12px; min-width: 220px; box-shadow: 0 12px 30px rgba(0,0,0,0.3); }
+    .toast.success { border-color: var(--success); }
+    .toast.error { border-color: var(--danger); }
+    .status { margin-top: 6px; font-size: 14px; }
+    .loading { color: var(--accent); }
+    .ok { color: var(--success); }
+    .error { color: var(--danger); }
+    .item { padding: 10px; border: 1px solid var(--border); border-radius: 10px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 999px; background: #1f2937; border: 1px solid var(--border); color: var(--muted); font-size: 12px; }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <div class="pill">第 20 步 · 综合项目</div>
+      <div class="muted">整合主题/状态/异步/组件/可访问性</div>
+    </div>
+    <div class="row">
+      <a href="19_js_perf_engineering.html" class="tag">返回第 19 步</a>
+      <a href="教程_JS_20_综合项目.md" class="tag">阅读教程</a>
+    </div>
+  </header>
+
+  <div class="grid">
+    <section class="card" id="theme-card">
+      <h3>主题切换</h3>
+      <p class="muted">localStorage 记忆，切换浅/深色。</p>
+      <div class="row" style="margin-bottom:8px;">
+        <button data-theme="light">浅色</button>
+        <button data-theme="dark">深色</button>
+        <button data-theme="system">跟随系统</button>
+      </div>
+      <div class="status" id="theme-status"></div>
+    </section>
+
+    <section class="card" id="tabs-card">
+      <h3>信息中心（Tabs）</h3>
+      <p class="muted">委托 + ARIA，展示不同面板。</p>
+      <div class="tab-list" role="tablist" aria-label="信息中心">
+        <button class="tab" role="tab" aria-selected="true" data-tab="overview">概览</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="tasks">任务</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="settings">设置</button>
+      </div>
+      <div class="panel active" data-panel="overview">加载异步数据后会在此显示摘要。</div>
+      <div class="panel" data-panel="tasks">
+        <div class="row" style="margin-bottom:8px;">
+          <input id="task-input" placeholder="添加任务..." />
+          <button id="btn-add-task">添加</button>
+        </div>
+        <ul id="task-list"></ul>
+      </div>
+      <div class="panel" data-panel="settings">可在此扩展更多设置项。</div>
+    </section>
+
+    <section class="card" id="form-card">
+      <h3>报名表单</h3>
+      <p class="muted">基础校验 + 提交反馈 + Toast。</p>
+      <form id="apply-form">
+        <input id="name" name="name" placeholder="姓名" />
+        <div style="height:8px;"></div>
+        <input id="email" name="email" type="email" placeholder="邮箱" autocomplete="email" />
+        <div style="height:8px;"></div>
+        <select id="track" name="track">
+          <option value="">选择学习线路</option>
+          <option value="frontend">前端进阶</option>
+          <option value="backend">后端基础</option>
+          <option value="ai">AI 入门</option>
+        </select>
+        <div style="height:8px;"></div>
+        <textarea id="note" name="note" rows="3" placeholder="备注（可选）"></textarea>
+        <div class="row" style="margin-top:10px;">
+          <button type="submit">提交</button>
+          <button type="button" id="btn-clear">清空</button>
+        </div>
+      </form>
+      <div class="status" id="form-status"></div>
+    </section>
+
+    <section class="card" id="data-card">
+      <h3>异步数据</h3>
+      <p class="muted">加载、错误、成功状态演示。</p>
+      <div class="row" style="margin-bottom:8px;">
+        <button id="btn-load">加载数据</button>
+        <button id="btn-fail">模拟失败</button>
+      </div>
+      <div class="status" id="data-status"></div>
+      <ul id="data-list"></ul>
+    </section>
+  </div>
+
+  <div class="toast-stack" id="toast-stack" aria-live="polite" aria-atomic="true"></div>
+
+  <script type="module">
+    // 主题切换
+    const themeStatus = document.querySelector('#theme-status');
+    const THEME_KEY = 'demo-theme';
+    const buttons = document.querySelectorAll('#theme-card button[data-theme]');
+    const applyTheme = (mode) => {
+      document.documentElement.dataset.theme = mode;
+      localStorage.setItem(THEME_KEY, mode);
+      themeStatus.textContent = `已切换到 ${mode}`;
+      themeStatus.className = 'status ok';
+    };
+    const savedTheme = localStorage.getItem(THEME_KEY) || 'system';
+    applyTheme(savedTheme);
+    buttons.forEach(btn => btn.addEventListener('click', () => applyTheme(btn.dataset.theme)));
+
+    // Tabs + 任务列表状态
+    const tabList = document.querySelector('#tabs-card .tab-list');
+    const tabs = Array.from(tabList.querySelectorAll('.tab'));
+    const panels = Array.from(document.querySelectorAll('#tabs-card .panel'));
+    tabList.addEventListener('click', (event) => {
+      const tab = event.target.closest('.tab');
+      if (!tab) return;
+      const key = tab.dataset.tab;
+      tabs.forEach(t => t.setAttribute('aria-selected', String(t === tab)));
+      panels.forEach(p => p.classList.toggle('active', p.dataset.panel === key));
+    });
+
+    const taskState = [];
+    const taskInput = document.querySelector('#task-input');
+    const taskList = document.querySelector('#task-list');
+    const renderTasks = () => {
+      taskList.innerHTML = taskState
+        .map(item => `<li class="item" data-id="${item.id}"><span>${item.text}</span><button class="tag" data-remove="${item.id}">删除</button></li>`)
+        .join('');
+    };
+    document.querySelector('#btn-add-task').addEventListener('click', () => {
+      const text = taskInput.value.trim();
+      if (!text) return;
+      taskState.push({ id: crypto.randomUUID(), text });
+      taskInput.value = '';
+      renderTasks();
+    });
+    taskList.addEventListener('click', (event) => {
+      const btn = event.target.closest('button[data-remove]');
+      if (!btn) return;
+      const id = btn.dataset.remove;
+      const idx = taskState.findIndex(t => t.id === id);
+      if (idx > -1) taskState.splice(idx, 1);
+      renderTasks();
+    });
+
+    // 表单校验 + Toast
+    const form = document.querySelector('#apply-form');
+    const formStatus = document.querySelector('#form-status');
+    const toastStack = document.querySelector('#toast-stack');
+
+    function showToast(message, kind = 'success', ttl = 2600) {
+      const toast = document.createElement('div');
+      toast.className = `toast ${kind}`;
+      toast.textContent = message;
+      toastStack.appendChild(toast);
+      setTimeout(() => toast.remove(), ttl);
+    }
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const name = form.name.value.trim();
+      const email = form.email.value.trim();
+      const track = form.track.value;
+      if (!name || !email.includes('@') || !track) {
+        formStatus.textContent = '请填写姓名、有效邮箱并选择路线';
+        formStatus.className = 'status error';
+        showToast('表单未通过校验', 'error');
+        return;
+      }
+      formStatus.textContent = '提交成功（模拟）';
+      formStatus.className = 'status ok';
+      showToast('已提交报名', 'success');
+      form.reset();
+    });
+    document.querySelector('#btn-clear').addEventListener('click', () => {
+      form.reset();
+      formStatus.textContent = '';
+    });
+
+    // 异步数据加载
+    const dataStatus = document.querySelector('#data-status');
+    const dataList = document.querySelector('#data-list');
+    const fakeFetch = (fail = false) => new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (fail) return reject(new Error('接口异常，请稍后再试'));
+        resolve([
+          { id: 1, title: '完成 CSS 主题化' },
+          { id: 2, title: '完成 JS 异步与组件' },
+          { id: 3, title: '准备综合项目部署' },
+        ]);
+      }, 600);
+    });
+
+    async function loadData(shouldFail = false) {
+      dataStatus.textContent = '加载中...';
+      dataStatus.className = 'status loading';
+      dataList.innerHTML = '';
+      try {
+        const data = await fakeFetch(shouldFail);
+        dataStatus.textContent = '加载成功';
+        dataStatus.className = 'status ok';
+        dataList.innerHTML = data.map(item => `<li><span class="badge">#${item.id}</span> ${item.title}</li>`).join('');
+      } catch (err) {
+        dataStatus.textContent = err.message;
+        dataStatus.className = 'status error';
+        showToast(err.message, 'error');
+      }
+    }
+
+    document.querySelector('#btn-load').addEventListener('click', () => loadData(false));
+    document.querySelector('#btn-fail').addEventListener('click', () => loadData(true));
+
+    // 初始渲染
+    renderTasks();
+    loadData(false);
+  </script>
+</body>
+</html>

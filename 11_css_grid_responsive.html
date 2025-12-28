@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CSS 第11步：Grid 网格与响应式设计</title>
+  <style>
+    :root{ --brand:#22c55e; --accent:#06b6d4; --bg:#f7f8fb; --card:#fff; --text:#0f172a; --muted:#64748b }
+    *{ box-sizing:border-box }
+    html,body{ margin:0; padding:0 }
+    body{ font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial,"Noto Sans","Microsoft YaHei",sans-serif; color:var(--text); background:var(--bg); line-height:1.6 }
+    .container{ max-width:1080px; margin:0 auto; padding:24px }
+    header{ background:linear-gradient(135deg,var(--brand),var(--accent)); color:#fff; border-radius:14px; padding:28px 24px; margin-bottom:24px; text-align:center }
+    header h1{ margin:0 0 8px }
+    section{ background:var(--card); border-radius:12px; box-shadow:0 6px 20px rgba(17,24,39,.08); padding:22px; margin-bottom:22px }
+    h2{ color:var(--brand); border-bottom:2px solid var(--brand); padding-bottom:8px; margin-top:0 }
+    h3{ color:var(--accent) }
+    .code{ background:#0b1020; color:#e5e7eb; border-radius:8px; padding:14px; overflow:auto; font:14px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace; margin:12px 0 }
+    .note{ background:#fffbe6; border-left:4px solid #f59e0b; padding:10px 12px; border-radius:6px; margin:12px 0; color:#4b5563 }
+    .grid{ display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)) }
+    .card{ border:1px solid #e5e7eb; background:#fff; border-radius:10px; padding:12px; box-shadow:0 6px 16px rgba(0,0,0,.06) }
+
+    /* 一、Grid 基础：容器属性 */
+    .g-basic{ display:grid; gap:10px; grid-template-columns: 120px 1fr 2fr; grid-auto-rows: 60px }
+    .g-basic .item{ background:#e0f2fe; border:1px solid #bae6fd; border-radius:8px; display:flex; align-items:center; justify-content:center }
+
+    /* 二、轨道尺寸：fr / minmax / auto-fit|fill */
+    .g-tracks{ display:grid; gap:10px; /* 默认三列 */ grid-template-columns: repeat(3, 1fr) }
+    .g-tracks .box{ background:#ecfccb; border:1px solid #bbf7d0; border-radius:8px; padding:10px; text-align:center }
+    .g-auto{ display:grid; gap:10px; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)) }
+
+    /* 三、项目放置：grid-row / grid-column / span */
+    .g-place{ display:grid; gap:10px; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 80px }
+    .g-place .a{ grid-column: 1 / span 2; background:#fef3c7 }
+    .g-place .b{ grid-row: 1 / span 2; background:#fee2e2 }
+    .g-place .c{ grid-column: 3 / 5; background:#e9d5ff }
+    .g-place > div{ border:1px solid #e5e7eb; border-radius:8px; display:flex; align-items:center; justify-content:center }
+
+    /* 四、命名区域（grid-template-areas） */
+    .layout{ display:grid; gap:10px; grid-template-columns: 200px 1fr; grid-template-rows: auto 1fr auto; grid-template-areas:
+      "header header"
+      "sidebar main"
+      "footer footer"; }
+    .header{ grid-area: header; background:#e0e7ff; border:1px solid #c7d2fe; border-radius:8px; padding:10px }
+    .sidebar{ grid-area: sidebar; background:#dcfce7; border:1px solid #bbf7d0; border-radius:8px; padding:10px }
+    .main{ grid-area: main; background:#f0f9ff; border:1px solid #bae6fd; border-radius:8px; padding:10px }
+    .footer{ grid-area: footer; background:#fee2e2; border:1px solid #fecaca; border-radius:8px; padding:10px }
+
+    /* 五、对齐与间距 */
+    .g-align{ display:grid; grid-template-columns: repeat(3, 120px); grid-auto-rows: 80px; background:#f8fafc; border:1px dashed #e5e7eb; border-radius:10px; padding:10px; justify-content:center; align-content:center; gap:12px; min-height:220px }
+    .g-align .cell{ background:#fff7ed; border:1px solid #fde68a; border-radius:8px; display:flex; align-items:center; justify-content:center }
+
+    /* 六、自适应卡片栅格（auto-fit + minmax） */
+    .cards{ display:grid; gap:12px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) }
+
+    /* 七、响应式：媒体查询 */
+    .resp-grid{ display:grid; gap:10px; grid-template-columns: repeat(4, 1fr) }
+    .resp-grid .cell{ background:#f1f5f9; border:1px solid #e2e8f0; border-radius:8px; padding:10px; text-align:center }
+    @media (max-width: 960px){ .resp-grid{ grid-template-columns: repeat(3, 1fr) } }
+    @media (max-width: 640px){ .resp-grid{ grid-template-columns: repeat(2, 1fr) } }
+    @media (max-width: 420px){ .resp-grid{ grid-template-columns: 1fr } }
+
+    /* 八、Grid + Flex 组合：用 Grid 搭骨架，用 Flex 排内部 */
+    .product{ display:grid; grid-template-columns: 120px 1fr; gap:12px; border:1px solid #e5e7eb; border-radius:10px; padding:12px; background:#fff }
+    .product .meta{ display:flex; gap:10px; align-items:center; flex-wrap:wrap }
+    .product .thumb{ background:#e2e8f0; border-radius:8px; min-height:80px }
+
+    /* 工具类 */
+    .btn{ background:var(--brand); color:#fff; border:none; border-radius:8px; padding:8px 12px; cursor:pointer }
+    .btn:hover{ filter:brightness(1.05) }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🧩 CSS 第 11 步：Grid 网格与响应式设计</h1>
+      <p>掌握二维网格布局：轨道尺寸、项目放置、命名区域与媒体查询</p>
+    </header>
+
+    <section>
+      <h2>1. Grid 基础：容器属性</h2>
+      <div class="g-basic">
+        <div class="item">120px</div>
+        <div class="item">1fr</div>
+        <div class="item">2fr</div>
+        <div class="item">自动行 60px</div>
+      </div>
+      <div class="code">.g-basic{ display:grid; gap:10px; grid-template-columns:120px 1fr 2fr; grid-auto-rows:60px }</div>
+    </section>
+
+    <section>
+      <h2>2. 轨道尺寸：fr / minmax / auto-fit vs auto-fill</h2>
+      <h3>固定列数（repeat(3, 1fr)）</h3>
+      <div class="g-tracks">
+        <div class="box">1</div><div class="box">2</div><div class="box">3</div><div class="box">4</div><div class="box">5</div>
+      </div>
+      <h3>自适应列数（auto-fit + minmax）</h3>
+      <div class="g-auto">
+        <div class="box">A</div><div class="box">B</div><div class="box">C</div><div class="box">D</div><div class="box">E</div>
+      </div>
+      <div class="note"><strong>提示：</strong>auto-fit 会“折叠”空轨道；auto-fill 会保留空轨道（多数场景用 auto-fit）。</div>
+      <div class="code">.grid{ grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) }</div>
+    </section>
+
+    <section>
+      <h2>3. 项目放置：grid-row / grid-column / span</h2>
+      <div class="g-place">
+        <div class="a">A：横跨2列</div>
+        <div class="b">B：纵跨2行</div>
+        <div class="c">C：第3-4列</div>
+        <div>D</div>
+        <div>E</div>
+      </div>
+      <div class="code">.a{ grid-column:1 / span 2 } .b{ grid-row:1 / span 2 } .c{ grid-column:3 / 5 }</div>
+    </section>
+
+    <section>
+      <h2>4. 命名区域（grid-template-areas）</h2>
+      <div class="layout">
+        <div class="header">Header</div>
+        <aside class="sidebar">Sidebar</aside>
+        <main class="main">Main</main>
+        <footer class="footer">Footer</footer>
+      </div>
+      <div class="code">
+.layout{ display:grid; grid-template-columns:200px 1fr; grid-template-areas:"header header" "sidebar main" "footer footer" }
+.header{ grid-area: header } .sidebar{ grid-area: sidebar } .main{ grid-area: main } .footer{ grid-area: footer }
+      </div>
+    </section>
+
+    <section>
+      <h2>5. 对齐与间距</h2>
+      <div class="g-align">
+        <div class="cell">1</div>
+        <div class="cell">2</div>
+        <div class="cell">3</div>
+      </div>
+      <div class="code">.grid{ justify-content:center; align-content:center; gap:12px }</div>
+    </section>
+
+    <section>
+      <h2>6. 自适应卡片栅格</h2>
+      <div class="cards">
+        <div class="card">卡片 1</div>
+        <div class="card">卡片 2</div>
+        <div class="card">卡片 3</div>
+        <div class="card">卡片 4</div>
+        <div class="card">卡片 5</div>
+      </div>
+      <div class="code">.cards{ display:grid; gap:12px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) }</div>
+    </section>
+
+    <section>
+      <h2>7. 响应式设计：媒体查询（断点示例）</h2>
+      <div class="resp-grid">
+        <div class="cell">1</div><div class="cell">2</div><div class="cell">3</div><div class="cell">4</div>
+        <div class="cell">5</div><div class="cell">6</div><div class="cell">7</div><div class="cell">8</div>
+      </div>
+      <div class="code">
+@media (max-width: 960px){ .grid{ grid-template-columns: repeat(3, 1fr) } }
+@media (max-width: 640px){ .grid{ grid-template-columns: repeat(2, 1fr) } }
+@media (max-width: 420px){ .grid{ grid-template-columns: 1fr } }
+      </div>
+      <div class="note">策略建议：优先“移动优先”（mobile-first），即从小屏开始写样式，逐步用 min-width 断点增强。</div>
+    </section>
+
+    <section>
+      <h2>8. Grid + Flex 组合</h2>
+      <article class="product">
+        <div class="thumb"></div>
+        <div>
+          <h3 style="margin:0 0 6px">产品标题</h3>
+          <div class="meta">
+            <span style="background:#e0e7ff; padding:4px 8px; border-radius:999px">标签A</span>
+            <span style="background:#e0e7ff; padding:4px 8px; border-radius:999px">标签B</span>
+            <span style="color:#10b981">库存充足</span>
+          </div>
+        </div>
+      </article>
+      <div class="note">经验：用 Grid 搭建页面骨架（二维），内部模块用 Flex 实现一维对齐与分布。</div>
+    </section>
+
+    <section>
+      <h2>综合练习</h2>
+      <ol>
+        <li>实现“圣杯布局”：Header/Sidebar/Main/Footer（用 grid-template-areas）。</li>
+        <li>做一个图库：使用 auto-fit + minmax 让卡片在不同屏幕自适应。</li>
+        <li>为某个网格项设置跨行/跨列，形成视觉焦点。</li>
+        <li>采用移动优先策略，为 420px、640px、960px 设计断点。</li>
+      </ol>
+      <button class="btn" onclick="alert('完成练习，继续加油！')">完成后点我 ✅</button>
+    </section>
+
+    <footer style="text-align:center; color:var(--muted)">
+      <p>&copy; 2024 CSS 第11步 · Grid 网格与响应式设计</p>
+    </footer>
+  </div>
+</body>
+</html>

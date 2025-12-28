@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CSS 第13步：变量、主题、层叠与工程化</title>
+  <style>
+    /* 1) 设计令牌（Design Tokens）与 CSS 变量（Custom Properties） */
+    :root{
+      --color-brand: #3b82f6;
+      --color-brand-strong: #2563eb;
+      --color-bg: #f7f8fb;
+      --color-card: #ffffff;
+      --color-text: #0f172a;
+      --color-muted: #64748b;
+      --radius: 12px;
+      --shadow: 0 6px 20px rgba(17,24,39,.08);
+      --sp-1: 6px; --sp-2: 10px; --sp-3: 14px; --sp-4: 18px; --sp-5: 24px;
+    }
+
+    /* 2) 主题（Theming）：通过 data-theme 切换变量值 */
+    html[data-theme="dark"]{
+      --color-bg: #0b1020;
+      --color-card: #0f172a;
+      --color-text: #e5e7eb;
+      --color-muted: #94a3b8;
+      --shadow: 0 8px 28px rgba(0,0,0,.35);
+    }
+
+    /* 3) 基础样式（使用变量） */
+    *{ box-sizing:border-box }
+    html,body{ margin:0; padding:0 }
+    body{
+      font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial,"Noto Sans","Microsoft YaHei",sans-serif;
+      color:var(--color-text); background:var(--color-bg); line-height:1.6;
+    }
+    .container{ max-width:1080px; margin:0 auto; padding:var(--sp-5) }
+
+    /* 4) 层叠层（Cascade Layers）：控制大类样式的优先顺序 */
+    /* 声明顺序决定层的优先级：utilities > components > base */
+    @layer base, components, utilities;
+
+    @layer base{
+      header{
+        background: linear-gradient(135deg, var(--color-brand), var(--color-brand-strong));
+        color:#fff; border-radius:var(--radius); padding:28px var(--sp-5); margin-bottom:var(--sp-5); text-align:center;
+        box-shadow: var(--shadow);
+      }
+      header h1{ margin:0 0 var(--sp-2) }
+      section{
+        background:var(--color-card); border-radius:var(--radius); box-shadow: var(--shadow);
+        padding:var(--sp-4); margin-bottom:var(--sp-4);
+      }
+      h2{ color:var(--color-brand); border-bottom:2px solid var(--color-brand); padding-bottom:8px; margin-top:0 }
+      .code{ background:#0b1020; color:#e5e7eb; border-radius:8px; padding:var(--sp-3); overflow:auto; font:14px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace; margin:var(--sp-3) 0 }
+      .note{ background:#fffbe6; border-left:4px solid #f59e0b; padding:var(--sp-2) var(--sp-3); border-radius:6px; margin:var(--sp-3) 0; color:#4b5563 }
+      html[data-theme="dark"] .code{ background:#0b1020 }
+      html[data-theme="dark"] .note{ background:#1f2937; color:#e5e7eb; border-left-color:#f59e0b }
+    }
+
+    @layer components{
+      .btn{
+        background:var(--color-brand); color:#fff; border:none; border-radius:10px;
+        padding:10px 14px; cursor:pointer; transition: transform .2s ease, filter .2s ease;
+      }
+      .btn:hover{ transform: translateY(-2px); filter:brightness(1.05) }
+      .btn.secondary{ background:#111827 }
+
+      .card{ border:1px solid rgba(100,116,139,.2); border-radius:var(--radius); padding:var(--sp-4); background:var(--color-card); box-shadow: var(--shadow) }
+      .card__title{ font-weight:600; margin:0 0 var(--sp-2) }
+      .card__desc{ color:var(--color-muted); margin:0 }
+
+      /* BEM 示例：.block__element--modifier */
+      .badge{ display:inline-block; padding:4px 8px; border-radius:999px; font-size:12px }
+      .badge--info{ background:#e0f2fe; color:#0ea5e9 }
+      .badge--ok{ background:#dcfce7; color:#16a34a }
+      .badge--warn{ background:#fef3c7; color:#d97706 }
+    }
+
+    @layer utilities{
+      .flex{ display:flex }
+      .items-center{ align-items:center }
+      .justify-between{ justify-content:space-between }
+      .gap-2{ gap: var(--sp-2) }
+      .gap-3{ gap: var(--sp-3) }
+      .mt-2{ margin-top: var(--sp-2) }
+      .mt-3{ margin-top: var(--sp-3) }
+      .mt-4{ margin-top: var(--sp-4) }
+      .w-100{ width:100% }
+    }
+
+    /* 5) 特异性管理：:where() 与 :is() 降低/集中特异性 */
+    /* :where() 内的选择器特异性为 0，有助于组件可覆盖 */
+    :where(.prose) h1{ font-size:clamp(1.5rem, 2.8vw, 2.25rem); margin:0 0 var(--sp-2) }
+    :where(.prose) p{ margin:0 0 var(--sp-2); color:var(--color-muted) }
+    /* :is() 聚合选择器但保留最右选择器的特异性 */
+    .nav :is(a, button){ color:inherit; text-decoration:none }
+
+    /* 6) 作用域建议：父级限定（类名容器） */
+    .demo-scope .title{ color:var(--color-brand-strong) }
+
+    /* 7) 用户配色偏好（默认跟随系统） */
+    @media (prefers-color-scheme: dark){
+      /* 初载入时若系统偏好暗色，优先用暗色主题（若无手动选择） */
+      html[data-theme="system"]{ --color-bg:#0b1020; --color-card:#0f172a; --color-text:#e5e7eb; --color-muted:#94a3b8; --shadow:0 8px 28px rgba(0,0,0,.35) }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="flex items-center justify-between">
+      <div>
+        <h1>🎛️ CSS 第 13 步：变量、主题、层叠与工程化</h1>
+        <p style="opacity:.9">用设计令牌统一风格，借助主题与层叠层提升可维护性</p>
+      </div>
+      <div class="flex gap-2">
+        <button class="btn" data-theme="light">浅色</button>
+        <button class="btn" data-theme="dark">深色</button>
+        <button class="btn secondary" data-theme="system">跟随系统</button>
+      </div>
+    </header>
+
+    <section>
+      <h2>1. CSS 变量与设计令牌</h2>
+      <div class="prose">
+        <p>变量集中定义在 <code>:root</code>，组件仅消费变量。这样可快速换肤、统一风格。</p>
+      </div>
+      <div class="code">:root{ --color-brand:#3b82f6; --radius:12px }\n.button{ background: var(--color-brand); border-radius: var(--radius) }</div>
+    </section>
+
+    <section>
+      <h2>2. 主题切换（Theming）</h2>
+      <div class="card">
+        <h3 class="card__title">当前主题：<span id="theme-label">light</span></h3>
+        <p class="card__desc">点击右上角按钮可在浅色/深色/跟随系统之间切换。</p>
+        <div class="mt-3">
+          <span class="badge badge--info">info</span>
+          <span class="badge badge--ok">ok</span>
+          <span class="badge badge--warn">warn</span>
+        </div>
+      </div>
+      <div class="code">html[data-theme="dark"]{ --color-bg:#0b1020; --color-text:#e5e7eb /* ... */ }</div>
+      <div class="note">建议：用 <code>data-theme</code> 或类名做主题开关，避免使用全局覆盖与 !important。</div>
+    </section>
+
+    <section>
+      <h2>3. 层叠层（@layer）组织样式</h2>
+      <div class="prose">
+        <p>将样式分为 <strong>base</strong>（基础）、<strong>components</strong>（组件）、<strong>utilities</strong>（工具类）。
+        通过 <code>@layer base, components, utilities;</code> 固定优先顺序，减少“互相踩踏”。</p>
+      </div>
+      <div class="code">@layer base, components, utilities; /* 声明顺序决定优先级 */</div>
+    </section>
+
+    <section>
+      <h2>4. 特异性管理：:where() / :is()</h2>
+      <div class="prose">
+        <p><code>:where()</code> 让选择器特异性为 0，便于更高层样式覆盖；<code>:is()</code> 用于选择器聚合，避免重复。</p>
+      </div>
+      <nav class="nav card mt-3">
+        <a href="#" class="badge badge--info">首页</a>
+        <a href="#" class="badge badge--ok">文档</a>
+        <button class="badge badge--warn">关于</button>
+      </nav>
+      <div class="code">:where(.prose) h1{ font-size:2rem }\n.nav :is(a, button){ color:inherit }</div>
+    </section>
+
+    <section class="demo-scope">
+      <h2 class="title">5. 命名与作用域：BEM 与容器作用域</h2>
+      <div class="card">
+        <h3 class="card__title">BEM：<code>.block__element--modifier</code></h3>
+        <p class="card__desc">示例：<code>.card__title</code>、<code>.badge--ok</code>。容器作用域：父级类限定子选择器，避免全局污染。</p>
+      </div>
+      <div class="note">实验性：<code>@scope</code> 提供原生作用域（浏览器支持尚未完全一致，可作为了解）。</div>
+    </section>
+
+    <section>
+      <h2>综合练习</h2>
+      <ol>
+        <li>为项目提炼一套 tokens（颜色/间距/圆角/阴影/字号），统一在 <code>:root</code> 定义。</li>
+        <li>实现浅色/深色主题切换，并记住用户选择（localStorage）。</li>
+        <li>用 @layer 将样式分层，尽量避免 <code>!important</code>。</li>
+        <li>在一段文档区使用 <code>:where()</code> 降低特异性，验证覆盖关系。</li>
+      </ol>
+    </section>
+
+    <footer style="text-align:center; color:var(--color-muted)">
+      <p>&copy; 2024 CSS 第13步 · 变量、主题、层叠与工程化</p>
+    </footer>
+  </div>
+
+  <script>
+    // 主题切换与记忆
+    (function(){
+      const THEME_KEY = 'learn_css_theme';
+      const root = document.documentElement;
+      const label = document.getElementById('theme-label');
+
+      function applyTheme(theme){
+        root.setAttribute('data-theme', theme);
+        label && (label.textContent = theme);
+      }
+      function loadTheme(){
+        const saved = localStorage.getItem(THEME_KEY);
+        applyTheme(saved || 'light');
+      }
+      loadTheme();
+
+      document.addEventListener('click', (e)=>{
+        const t = e.target;
+        if(t && t.matches('button[data-theme]')){
+          const theme = t.getAttribute('data-theme');
+          applyTheme(theme);
+          localStorage.setItem(THEME_KEY, theme);
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

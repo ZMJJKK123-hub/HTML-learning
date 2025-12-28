@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CSS 基础与选择器 - 第 8 步</title>
+  <!-- 内联样式（不推荐大量使用，仅演示） -->
+  <!-- <h1 style="color:red">这是一段内联样式</h1> -->
+  <style>
+    /* 页面基础样式 */
+    :root {
+      --brand: #667eea;
+      --accent: #764ba2;
+      --bg: #f5f7fb;
+      --text: #1f2937;
+      --muted: #6b7280;
+    }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    header {
+      background: linear-gradient(135deg, var(--brand), var(--accent));
+      color: #fff;
+      border-radius: 12px;
+      padding: 28px 24px;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+    header h1 { margin: 0 0 8px; }
+    header p { margin: 0; opacity: 0.9; }
+
+    section {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(17,24,39,0.08);
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    h2 {
+      color: var(--brand);
+      border-bottom: 2px solid var(--brand);
+      padding-bottom: 8px;
+      margin-top: 0;
+    }
+    h3 { color: var(--accent); margin-top: 20px; }
+
+    .code-box {
+      background: #0b1020;
+      color: #e5e7eb;
+      border-radius: 8px;
+      padding: 14px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      overflow-x: auto;
+      margin: 12px 0;
+      font-size: 14px;
+    }
+    .demo-box {
+      background: #f0f7ff;
+      border: 2px solid var(--brand);
+      border-radius: 8px;
+      padding: 16px;
+      margin: 12px 0;
+    }
+    .note {
+      background: #fffbe6;
+      border-left: 4px solid #f59e0b;
+      padding: 12px 14px;
+      border-radius: 6px;
+      margin: 12px 0;
+      color: #4b5563;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    /* 第 2 节：基础选择器演示 */
+    /* 类型选择器（标签选择器） */
+    #selectors-demo p { color: #374151; }
+    /* 类选择器 */
+    .highlight { background: #fffbeb; border: 1px dashed #f59e0b; padding: 4px 8px; }
+    /* ID 选择器 */
+    #unique-title { color: #10b981; }
+
+    /* 组合与层级选择器 */
+    /* 后代选择器 */
+    .card p { font-size: 14px; color: #4b5563; }
+    /* 子代选择器 */
+    .card > h4 { margin: 0 0 6px; }
+    /* 并列选择器（分组） */
+    .chip, .badge { display: inline-block; padding: 4px 8px; border-radius: 999px; background: #eef2ff; color: #3730a3; font-size: 12px; margin-right: 6px; }
+    /* 相邻兄弟选择器 */
+    .title + .desc { color: #6b7280; }
+    /* 通用兄弟选择器 */
+    .row ~ .row-note { color: #2563eb; }
+
+    /* 属性选择器 */
+    a[target="_blank"] { color: #2563eb; }
+    input[type="email"] { border: 1px solid #60a5fa; }
+    input[placeholder^="请输入"] { background: #eff6ff; }
+
+    /* 伪类与伪元素 */
+    .link:hover { color: #ef4444; }
+    .btn:focus { outline: 3px solid rgba(102,126,234,0.35); }
+    .list li:nth-child(odd) { background: #f9fafb; }
+    .list li:nth-child(even) { background: #eef2ff; }
+    .pill::before { content: "• "; color: #10b981; }
+    .pill::after { content: " ✓"; color: #10b981; }
+    ::selection { background: #fde68a; color: #1f2937; }
+
+    /* 基础属性与盒模型 */
+    .box-demo {
+      display: inline-block;
+      width: 160px; height: 80px;
+      margin: 10px; padding: 12px;
+      border: 3px solid #a78bfa;
+      background: #ede9fe;
+      box-sizing: border-box; /* 采用边框盒模型 */
+    }
+    .box-content { background: #ddd6fe; height: 100%; }
+
+    /* 颜色与单位 */
+    .color-samples { display: flex; flex-wrap: wrap; gap: 10px; }
+    .color-samples .swatch { width: 90px; height: 40px; border-radius: 6px; border: 1px solid #e5e7eb; display: flex; align-items: center; justify-content: center; font-size: 12px; }
+    .swatch.hex { background: #667eea; color: #fff; }
+    .swatch.rgb { background: rgb(118, 75, 162); color: #fff; }
+    .swatch.hsl { background: hsl(219, 79%, 66%); color: #fff; }
+    .unit-demo { display: flex; gap: 8px; align-items: baseline; }
+    .unit-demo .px { font-size: 16px; }
+    .unit-demo .em { font-size: 1.25em; }
+    .unit-demo .rem { font-size: 1.25rem; }
+    .unit-demo .vw { font-size: 3vw; }
+
+    /* 优先级与 !important 警示 */
+    .priority p { color: #111827; }
+    .priority .emphasis { color: #ef4444; }
+    /* 更高优先级（ID > 类） */
+    #priority-strong .emphasis { color: #10b981; }
+    /* 不推荐但演示 */
+    .force { color: #6366f1 !important; }
+
+    /* 按钮与交互 */
+    .btn {
+      background: var(--brand);
+      color: #fff;
+      border: none; border-radius: 8px;
+      padding: 10px 14px;
+      cursor: pointer;
+    }
+    .btn:hover { filter: brightness(1.05); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🎨 CSS 基础与选择器（第 8 步）</h1>
+      <p>从“如何写样式”到“如何选中元素”的系统入门</p>
+    </header>
+
+    <section id="intro">
+      <h2>第 1 部分：CSS 的 3 种使用方式</h2>
+      <div class="note">
+        <strong>三种方式：</strong>
+        <ul>
+          <li>内联样式（inline）：直接写在元素上，如 <code>style="color:red"</code></li>
+          <li>内部样式（internal）：写在页面的 <code>&lt;style&gt;</code> 标签中（本页采用）</li>
+          <li>外部样式（external）：写在 <code>.css</code> 文件中，通过 <code>&lt;link&gt;</code> 引入</li>
+        </ul>
+      </div>
+      <div class="code-box">
+&lt;!-- 内联样式（仅演示） --&gt;
+&lt;h2 style="color:red"&gt;Hello CSS&lt;/h2&gt;
+
+&lt;!-- 内部样式（本页 head 内） --&gt;
+&lt;style&gt;
+  h2 { color: #667eea; }
+&lt;/style&gt;
+
+&lt;!-- 外部样式（推荐在真实项目中） --&gt;
+&lt;link rel="stylesheet" href="styles.css" /&gt;
+      </div>
+      <div class="demo-box">
+        <p>真实项目中更推荐“外部样式”，便于复用与维护。</p>
+      </div>
+    </section>
+
+    <section id="selectors-demo">
+      <h2>第 2 部分：基础选择器</h2>
+      <h3 id="unique-title">ID 选择器（#id）</h3>
+      <p>ID 在页面中应该唯一，适合少量特定元素。</p>
+      <h3 class="title">类选择器（.class）</h3>
+      <p class="desc">类可以重复使用，适合批量样式复用。</p>
+      <p class="highlight">这是被类选择器选中的段落（背景为浅黄）。</p>
+      <div class="code-box">
+/* CSS */
+#unique-title { color: #10b981; }
+.highlight { background: #fffbeb; }
+/* 类型选择器：直接选标签 */
+p { color: #374151; }
+      </div>
+    </section>
+
+    <section id="combine">
+      <h2>第 3 部分：组合与层级选择器</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h4>后代选择器（空格）</h4>
+          <p>.card p 选中 card 中的所有段落。</p>
+          <span class="chip">card</span>
+          <span class="badge">descendant</span>
+        </div>
+        <div class="card">
+          <h4>子代选择器（>）</h4>
+          <p>仅选中直接子元素：.card > h4</p>
+        </div>
+      </div>
+      <div class="demo-box">
+        <h4 class="title">并列选择器（,）</h4>
+        <p class="desc">一条规则可应用到多个选择器。</p>
+        <div class="row">第 1 行</div>
+        <div class="row">第 2 行</div>
+        <p class="row-note">相邻/通用兄弟选择器可选择后续兄弟元素。</p>
+      </div>
+      <div class="code-box">
+/* 并列选择器 */
+.chip, .badge { /* ... */ }
+/* 相邻兄弟 .title + .desc */
+/* 通用兄弟 .row ~ .row-note */
+      </div>
+    </section>
+
+    <section id="attr">
+      <h2>第 4 部分：属性选择器</h2>
+      <p>根据属性和值选择元素，常见于表单与链接：</p>
+      <div class="demo-box">
+        <a href="https://example.com" target="_blank" class="link">新窗口打开的链接</a>
+        <br /><br />
+        <input type="email" placeholder="请输入你的邮箱" />
+      </div>
+      <div class="code-box">
+a[target="_blank"] { color: #2563eb }
+input[placeholder^="请输入"] { background: #eff6ff }
+input[type="email"] { border: 1px solid #60a5fa }
+      </div>
+    </section>
+
+    <section id="pseudo">
+      <h2>第 5 部分：伪类与伪元素</h2>
+      <div class="demo-box">
+        <a href="#" class="link">鼠标悬停我（:hover）</a>
+        <button class="btn">聚焦我（:focus）</button>
+        <ul class="list">
+          <li class="pill">第 1 行（odd）</li>
+          <li class="pill">第 2 行（even）</li>
+          <li class="pill">第 3 行（odd）</li>
+          <li class="pill">第 4 行（even）</li>
+        </ul>
+      </div>
+      <div class="code-box">
+.link:hover { color: #ef4444 }
+.btn:focus { outline: 3px solid rgba(102,126,234,0.35) }
+.list li:nth-child(odd) { background: #f9fafb }
+.pill::before { content: "• " }
+.pill::after { content: " ✓" }
+::selection { background: #fde68a }
+      </div>
+    </section>
+
+    <section id="box">
+      <h2>第 6 部分：盒模型（Box Model）</h2>
+      <p>盒模型由内容、内边距（padding）、边框（border）、外边距（margin）组成。</p>
+      <div class="demo-box">
+        <div class="box-demo">
+          <div class="box-content">内容区域</div>
+        </div>
+        <div class="box-demo" style="box-sizing: content-box">
+          <div class="box-content">content-box（对比）</div>
+        </div>
+      </div>
+      <div class="code-box">
+.box { width: 160px; padding: 12px; border: 3px solid; margin: 10px; }
+/* 推荐：border-box 更易计算总尺寸 */
+.box { box-sizing: border-box }
+      </div>
+    </section>
+
+    <section id="colors-units">
+      <h2>第 7 部分：颜色与单位</h2>
+      <h3>颜色</h3>
+      <div class="color-samples">
+        <div class="swatch hex">#667eea</div>
+        <div class="swatch rgb">rgb(118, 75, 162)</div>
+        <div class="swatch hsl">hsl(219, 79%, 66%)</div>
+      </div>
+      <h3>单位</h3>
+      <div class="unit-demo">
+        <span class="px">16px</span>
+        <span class="em">1.25em</span>
+        <span class="rem">1.25rem</span>
+        <span class="vw">3vw</span>
+      </div>
+      <div class="note">
+        <strong>建议：</strong>排版优先用 <em>rem</em> 与百分比，布局使用 <em>flex/grid</em> 结合响应式单位（vw/vh）。
+      </div>
+    </section>
+
+    <section id="priority">
+      <h2>第 8 部分：层叠与优先级（Specificity）</h2>
+      <p>选择器优先级：<strong>内联</strong> > ID > 类/属性/伪类 > 标签。</p>
+      <div class="demo-box priority" id="priority-strong">
+        <p>普通文本</p>
+        <p class="emphasis">强调文本（类选择器）</p>
+        <p class="emphasis force">被 !important 强制的文本</p>
+      </div>
+      <div class="code-box">
+/* 类选择器 */
+.emphasis { color: #ef4444 }
+/* ID 优先级更高 */
+#priority-strong .emphasis { color: #10b981 }
+/* !important 会强制覆盖（请谨慎使用） */
+.force { color: #6366f1 !important }
+      </div>
+      <div class="note">
+        <strong>最佳实践：</strong>尽量通过更合理的选择器与结构组织样式，避免滥用 <code>!important</code>。
+      </div>
+    </section>
+
+    <section id="exercise">
+      <h2>综合练习</h2>
+      <ol>
+        <li>在本页新增一个卡片组件，要求：标题使用类选择器设为品牌色，描述文字使用后代选择器设为次要色。</li>
+        <li>新增一个按钮，鼠标悬停时变暗，聚焦时显示可访问性轮廓。</li>
+        <li>为列表添加奇偶行背景与前缀/后缀符号。</li>
+      </ol>
+    </section>
+
+    <footer style="text-align:center; color: var(--muted); margin-top: 8px;">
+      <p>&copy; 2024 CSS 基础与选择器 · 第 8 步</p>
+    </footer>
+  </div>
+</body>
+</html>

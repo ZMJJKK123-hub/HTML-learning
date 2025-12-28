@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>第 15 步：JavaScript 基础与语法</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #0b1220;
+      --card: #111827;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --accent: #38bdf8;
+      --border: #1f2937;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 24px;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.12);
+      color: var(--accent);
+      font-size: 14px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.24);
+    }
+    .card h3 { margin: 0 0 8px; }
+    .muted { color: var(--muted); font-size: 14px; }
+    pre {
+      background: #0c1628;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      overflow: auto;
+      color: #c7d2fe;
+    }
+    code { font-family: 'Cascadia Code', 'Fira Code', Consolas, monospace; }
+    ul { margin: 8px 0 0; padding-left: 18px; }
+    button {
+      cursor: pointer;
+      padding: 8px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #1f2937;
+      color: var(--text);
+      transition: transform 0.15s ease, border-color 0.15s ease;
+    }
+    button:hover { transform: translateY(-1px); border-color: var(--accent); }
+    .row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .output { margin-top: 8px; font-weight: 600; }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 999px; background: #1f2937; border: 1px solid var(--border); color: var(--muted); font-size: 12px; }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <div class="pill">第 15 步 · JavaScript 基础与语法</div>
+      <div class="muted">配套教程：教程_JS_15_基础与语法.md · 上一站：14_css_capstone_practice.html</div>
+    </div>
+    <div class="row">
+      <a href="14_css_capstone_practice.html" class="badge">返回第 14 步</a>
+      <a href="教程_JS_15_基础与语法.md" class="badge">阅读教程</a>
+    </div>
+  </header>
+
+  <div class="grid">
+    <section class="card" id="variables">
+      <h3>变量与类型</h3>
+      <p class="muted">let/const，模板字符串，解构。</p>
+      <pre><code>const user = { name: 'Ada', level: 3 };
+const scores = [92, 85, 77];
+const { name } = user;
+const [first] = scores;
+const info = `${name} - first score ${first}`;</code></pre>
+      <div class="output" id="out-vars"></div>
+    </section>
+
+    <section class="card" id="logic">
+      <h3>条件与循环</h3>
+      <p class="muted">if/switch、for...of、数组迭代。</p>
+      <pre><code>const passed = scores.filter(s => s >= 80);
+const summary = passed.map((s, i) => `#${i + 1}: ${s}`).join(', ');
+</code></pre>
+      <div class="output" id="out-logic"></div>
+    </section>
+
+    <section class="card" id="functions">
+      <h3>函数与作用域</h3>
+      <p class="muted">函数声明/表达式/箭头，默认值，rest。</p>
+      <pre><code>function greet(name = 'friend') {
+  return `Hi, ${name}`;
+}
+const add = (a, b) => a + b;
+const sumAll = (...nums) => nums.reduce((t, n) => t + n, 0);
+</code></pre>
+      <div class="row">
+        <button id="btn-greet">Greet</button>
+        <button id="btn-sum">Sum 1..5</button>
+      </div>
+      <div class="output" id="out-fn"></div>
+    </section>
+
+    <section class="card" id="modules">
+      <h3>模块与导入</h3>
+      <p class="muted">type="module" + import/export。</p>
+      <pre><code>// 在 js/utils.js 中
+// export function double(n){ return n * 2 }
+
+// 在这里
+import { double } from './js/utils.js';
+const doubled = [1,2,3].map(double);</code></pre>
+      <div class="output" id="out-mod"></div>
+    </section>
+  </div>
+
+  <script type="module">
+    import { double, sum } from './js/utils.js';
+
+    // 变量与类型示例
+    const user = { name: 'Ada', level: 3 };
+    const scores = [92, 85, 77];
+    const { name } = user;
+    const [first] = scores;
+    const info = `${name} - first score ${first}`;
+    document.querySelector('#out-vars').textContent = info;
+
+    // 条件与循环示例
+    const passed = scores.filter(s => s >= 80);
+    const summary = passed.map((s, i) => `#${i + 1}: ${s}`).join(', ');
+    document.querySelector('#out-logic').textContent = `>=80: ${summary}`;
+
+    // 函数与事件示例
+    const greet = (person = 'friend') => `Hi, ${person}`;
+    const sumAll = (...nums) => nums.reduce((t, n) => t + n, 0);
+
+    const fnBox = document.querySelector('#out-fn');
+    document.querySelector('#btn-greet').addEventListener('click', () => {
+      fnBox.textContent = greet(name);
+    });
+    document.querySelector('#btn-sum').addEventListener('click', () => {
+      const total = sumAll(1, 2, 3, 4, 5);
+      fnBox.textContent = `1..5 = ${total}`;
+    });
+
+    // 模块示例
+    const doubled = [1, 2, 3].map(double);
+    const total = sum(scores);
+    const avg = (total / scores.length).toFixed(1);
+    document.querySelector('#out-mod').textContent = `double => ${doubled.join(', ')} | avg ${avg}`;
+  </script>
+</body>
+</html>

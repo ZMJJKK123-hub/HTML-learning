@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>列表完全教程 - 无序、有序、定义列表</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        section {
+            background: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #667eea;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 0.5rem;
+        }
+        h3 {
+            color: #764ba2;
+            margin-top: 1.5rem;
+        }
+        .code-box {
+            background: #f4f4f4;
+            border-left: 4px solid #667eea;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            border-radius: 4px;
+        }
+        .demo-box {
+            background: #f0f7ff;
+            border: 2px solid #667eea;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        .note {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        ul, ol {
+            margin: 1rem 0;
+        }
+        .custom-list-1 {
+            list-style-type: square;
+        }
+        .custom-list-2 {
+            list-style-type: circle;
+        }
+        .custom-list-3 {
+            list-style-type: disc;
+        }
+        .no-bullets {
+            list-style-type: none;
+        }
+        .custom-numbers-1 {
+            list-style-type: decimal;
+        }
+        .custom-numbers-2 {
+            list-style-type: upper-alpha;
+        }
+        .custom-numbers-3 {
+            list-style-type: lower-roman;
+        }
+        dl {
+            margin: 1rem 0;
+        }
+        dt {
+            font-weight: bold;
+            color: #667eea;
+            margin-top: 0.5rem;
+        }
+        dd {
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        table th, table td {
+            border: 1px solid #ddd;
+            padding: 0.8rem;
+            text-align: left;
+        }
+        table th {
+            background: #667eea;
+            color: white;
+        }
+        table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>📋 列表完全教程</h1>
+        <p>学习 HTML 中的三种列表类型：无序列表、有序列表、定义列表</p>
+    </header>
+
+    <main>
+        
+        <!-- 无序列表部分 -->
+        <section id="unordered">
+            <h2>第 1 部分：无序列表 &lt;ul&gt;</h2>
+
+            <h3>什么是无序列表？</h3>
+            <p>无序列表（Unordered List）用于显示一组没有特定顺序的项目。默认情况下，每个项目前面会显示一个圆点（•）。</p>
+
+            <div class="note">
+                <strong>何时使用无序列表？</strong>
+                <ul>
+                    <li>购物清单</li>
+                    <li>导航菜单</li>
+                    <li>特性列表</li>
+                    <li>任何顺序不重要的内容</li>
+                </ul>
+            </div>
+
+            <h3>1. 最基础的无序列表</h3>
+            <div class="code-box">
+&lt;ul&gt;
+    &lt;li&gt;苹果&lt;/li&gt;
+    &lt;li&gt;香蕉&lt;/li&gt;
+    &lt;li&gt;橙子&lt;/li&gt;
+&lt;/ul&gt;
+            </div>
+
+            <div class="demo-box">
+                <p><strong>效果：</strong></p>
+                <ul>
+                    <li>苹果</li>
+                    <li>香蕉</li>
+                    <li>橙子</li>
+                </ul>
+            </div>
+
+            <div class="note">
+                <strong>结构说明：</strong>
+                <ul>
+                    <li><code>&lt;ul&gt;</code> - Unordered List（无序列表容器）</li>
+                    <li><code>&lt;li&gt;</code> - List Item（列表项）</li>
+                    <li>每个 &lt;li&gt; 必须在 &lt;ul&gt; 内部</li>
+                </ul>
+            </div>
+
+            <h3>2. 不同的项目符号样式</h3>
+            
+            <h4>圆点（默认）</h4>
+            <div class="code-box">
+&lt;ul style="list-style-type: disc;"&gt;
+    &lt;li&gt;项目 1&lt;/li&gt;
+    &lt;li&gt;项目 2&lt;/li&gt;
+&lt;/ul&gt;
+            </div>
+            <div class="demo-box">
+                <ul class="custom-list-3">
+                    <li>项目 1</li>
+                    <li>项目 2</li>
+                </ul>
+            </div>
+
+            <h4>空心圆</h4>
+            <div class="code-box">
+&lt;ul style="list-style-type: circle;"&gt;
+    &lt;li&gt;项目 1&lt;/li&gt;
+    &lt;li&gt;项目 2&lt;/li&gt;
+&lt;/ul&gt;
+            </div>
+            <div class="demo-box">
+                <ul class="custom-list-2">
+                    <li>项目 1</li>
+                    <li>项目 2</li>
+                </ul>
+            </div>
+
+            <h4>方块</h4>
+            <div class="code-box">
+&lt;ul style="list-style-type: square;"&gt;
+    &lt;li&gt;项目 1&lt;/li&gt;
+    &lt;li&gt;项目 2&lt;/li&gt;
+&lt;/ul&gt;
+            </div>
+            <div class="demo-box">
+                <ul class="custom-list-1">
+                    <li>项目 1</li>
+                    <li>项目 2</li>
+                </ul>
+            </div>
+
+            <h4>无符号</h4>
+            <div class="code-box">
+&lt;ul style="list-style-type: none;"&gt;
+    &lt;li&gt;项目 1&lt;/li&gt;
+    &lt;li&gt;项目 2&lt;/li&gt;
+&lt;/ul&gt;
+            </div>
+            <div class="demo-box">
+                <ul class="no-bullets">
+                    <li>项目 1</li>
+                    <li>项目 2</li>
+                </ul>
+                <p style="font-size: 0.9rem; color: #666;">
+                    <strong>用途：</strong>通常用于导航菜单，去掉默认的项目符号
+                </p>
+            </div>
+
+            <h3>3. 实际应用示例</h3>
+
+            <h4>购物清单</h4>
+            <div class="demo-box">
+                <h4>今天的购物清单</h4>
+                <ul>
+                    <li>牛奶（2 瓶）</li>
+                    <li>面包（1 袋）</li>
+                    <li>鸡蛋（1 盒）</li>
+                    <li>水果
+                        <ul>
+                            <li>苹果</li>
+                            <li>香蕉</li>
+                        </ul>
+                    </li>
+                    <li>蔬菜</li>
+                </ul>
+            </div>
+
+            <h4>网站导航菜单</h4>
+            <div class="demo-box">
+                <ul style="list-style-type: none; padding: 0;">
+                    <li style="display: inline; margin-right: 1rem;">
+                        <a href="#home">首页</a>
+                    </li>
+                    <li style="display: inline; margin-right: 1rem;">
+                        <a href="#about">关于</a>
+                    </li>
+                    <li style="display: inline; margin-right: 1rem;">
+                        <a href="#services">服务</a>
+                    </li>
+                    <li style="display: inline; margin-right: 1rem;">
+                        <a href="#contact">联系</a>
+                    </li>
+                </ul>
+            </div>
+
+        </section>
+
+        <!-- 有序列表部分 -->
+        <section id="ordered">
+            <h2>第 2 部分：有序列表 &lt;ol&gt;</h2>
+
+            <h3>什么是有序列表？</h3>
+            <p>有序列表（Ordered List）用于显示一组有特定顺序的项目。默认情况下，每个项目前面会显示数字（1, 2, 3...）。</p>
+
+            <div class="note">
+                <strong>何时使用有序列表？</strong>
+                <ul>
+                    <li>步骤说明</li>
+                    <li>排名</li>
+                    <li>时间顺序</li>
+                    <li>任何顺序重要的内容</li>
+                </ul>
+            </div>
+
+            <h3>1. 最基础的有序列表</h3>
+            <div class="code-box">
+&lt;ol&gt;
+    &lt;li&gt;打开浏览器&lt;/li&gt;
+    &lt;li&gt;输入网址&lt;/li&gt;
+    &lt;li&gt;按回车键&lt;/li&gt;
+&lt;/ol&gt;
+            </div>
+
+            <div class="demo-box">
+                <p><strong>效果：</strong></p>
+                <ol>
+                    <li>打开浏览器</li>
+                    <li>输入网址</li>
+                    <li>按回车键</li>
+                </ol>
+            </div>
+
+            <h3>2. 不同的编号样式</h3>
+
+            <h4>数字（默认）</h4>
+            <div class="code-box">
+&lt;ol style="list-style-type: decimal;"&gt;
+    &lt;li&gt;第一步&lt;/li&gt;
+    &lt;li&gt;第二步&lt;/li&gt;
+    &lt;li&gt;第三步&lt;/li&gt;
+&lt;/ol&gt;
+            </div>
+            <div class="demo-box">
+                <ol class="custom-numbers-1">
+                    <li>第一步</li>
+                    <li>第二步</li>
+                    <li>第三步</li>
+                </ol>
+            </div>
+
+            <h4>大写字母</h4>
+            <div class="code-box">
+&lt;ol style="list-style-type: upper-alpha;"&gt;
+    &lt;li&gt;第一步&lt;/li&gt;
+    &lt;li&gt;第二步&lt;/li&gt;
+    &lt;li&gt;第三步&lt;/li&gt;
+&lt;/ol&gt;
+            </div>
+            <div class="demo-box">
+                <ol class="custom-numbers-2">
+                    <li>第一步</li>
+                    <li>第二步</li>
+                    <li>第三步</li>
+                </ol>
+            </div>
+
+            <h4>小写字母</h4>
+            <div class="code-box">
+&lt;ol style="list-style-type: lower-alpha;"&gt;
+    &lt;li&gt;第一步&lt;/li&gt;
+    &lt;li&gt;第二步&lt;/li&gt;
+&lt;/ol&gt;
+            </div>
+            <div class="demo-box">
+                <ol style="list-style-type: lower-alpha;">
+                    <li>第一步</li>
+                    <li>第二步</li>
+                </ol>
+            </div>
+
+            <h4>罗马数字（大写）</h4>
+            <div class="code-box">
+&lt;ol style="list-style-type: upper-roman;"&gt;
+    &lt;li&gt;第一步&lt;/li&gt;
+    &lt;li&gt;第二步&lt;/li&gt;
+    &lt;li&gt;第三步&lt;/li&gt;
+&lt;/ol&gt;
+            </div>
+            <div class="demo-box">
+                <ol style="list-style-type: upper-roman;">
+                    <li>第一步</li>
+                    <li>第二步</li>
+                    <li>第三步</li>
+                </ol>
+            </div>
+
+            <h4>罗马数字（小写）</h4>
+            <div class="code-box">
+&lt;ol style="list-style-type: lower-roman;"&gt;
+    &lt;li&gt;第一步&lt;/li&gt;
+    &lt;li&gt;第二步&lt;/li&gt;
+    &lt;li&gt;第三步&lt;/li&gt;
+&lt;/ol&gt;
+            </div>
+            <div class="demo-box">
+                <ol class="custom-numbers-3">
+                    <li>第一步</li>
+                    <li>第二步</li>
+                    <li>第三步</li>
+                </ol>
+            </div>
+
+            <h3>3. 有序列表的属性</h3>
+
+            <h4>start 属性 - 从指定数字开始</h4>
+            <div class="code-box">
+&lt;ol start="5"&gt;
+    &lt;li&gt;第五项&lt;/li&gt;
+    &lt;li&gt;第六项&lt;/li&gt;
+    &lt;li&gt;第七项&lt;/li&gt;
+&lt;/ol&gt;
+            </div>
+            <div class="demo-box">
+                <ol start="5">
+                    <li>第五项</li>
+                    <li>第六项</li>
+                    <li>第七项</li>
+                </ol>
+            </div>
+
+            <h4>reversed 属性 - 倒序编号</h4>
+            <div class="code-box">
+&lt;ol reversed&gt;
+    &lt;li&gt;第三名&lt;/li&gt;
+    &lt;li&gt;第二名&lt;/li&gt;
+    &lt;li&gt;第一名&lt;/li&gt;
+&lt;/ol&gt;
+            </div>
+            <div class="demo-box">
+                <ol reversed>
+                    <li>第三名</li>
+                    <li>第二名</li>
+                    <li>第一名</li>
+                </ol>
+                <p style="font-size: 0.9rem; color: #666;">
+                    <strong>用途：</strong>倒计时、排名等
+                </p>
+            </div>
+
+            <h4>value 属性 - 单独设置某项的编号</h4>
+            <div class="code-box">
+&lt;ol&gt;
+    &lt;li&gt;项目 1&lt;/li&gt;
+    &lt;li value="10"&gt;项目 10&lt;/li&gt;
+    &lt;li&gt;项目 11&lt;/li&gt;
+&lt;/ol&gt;
+            </div>
+            <div class="demo-box">
+                <ol>
+                    <li>项目 1</li>
+                    <li value="10">项目 10</li>
+                    <li>项目 11</li>
+                </ol>
+            </div>
+
+            <h3>4. 实际应用示例</h3>
+
+            <h4>烹饪食谱步骤</h4>
+            <div class="demo-box">
+                <h4>🍝 意大利面的制作步骤</h4>
+                <ol>
+                    <li>烧一锅水，加入盐</li>
+                    <li>水沸腾后，放入意大利面</li>
+                    <li>煮 8-10 分钟直到面条变软</li>
+                    <li>沥干水分</li>
+                    <li>加入酱汁拌匀</li>
+                    <li>盛盘，撒上帕尔玛芝士</li>
+                </ol>
+            </div>
+
+            <h4>产品排名</h4>
+            <div class="demo-box">
+                <h4>🏆 2024 年最受欢迎的编程语言</h4>
+                <ol>
+                    <li>Python</li>
+                    <li>JavaScript</li>
+                    <li>Java</li>
+                    <li>C++</li>
+                    <li>TypeScript</li>
+                </ol>
+            </div>
+
+        </section>
+
+        <!-- 嵌套列表部分 -->
+        <section id="nested">
+            <h2>第 3 部分：嵌套列表</h2>
+
+            <h3>什么是嵌套列表？</h3>
+            <p>嵌套列表是在一个列表项内包含另一个列表。可以创建多层级的结构。</p>
+
+            <h3>1. 无序列表嵌套无序列表</h3>
+            <div class="code-box">
+&lt;ul&gt;
+    &lt;li&gt;前端开发
+        &lt;ul&gt;
+            &lt;li&gt;HTML&lt;/li&gt;
+            &lt;li&gt;CSS&lt;/li&gt;
+            &lt;li&gt;JavaScript&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;后端开发
+        &lt;ul&gt;
+            &lt;li&gt;Python&lt;/li&gt;
+            &lt;li&gt;Java&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/li&gt;
+&lt;/ul&gt;
+            </div>
+            <div class="demo-box">
+                <ul>
+                    <li>前端开发
+                        <ul>
+                            <li>HTML</li>
+                            <li>CSS</li>
+                            <li>JavaScript</li>
+                        </ul>
+                    </li>
+                    <li>后端开发
+                        <ul>
+                            <li>Python</li>
+                            <li>Java</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <h3>2. 有序列表嵌套无序列表</h3>
+            <div class="code-box">
+&lt;ol&gt;
+    &lt;li&gt;学习 HTML
+        &lt;ul&gt;
+            &lt;li&gt;标签&lt;/li&gt;
+            &lt;li&gt;属性&lt;/li&gt;
+            &lt;li&gt;语义化&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;学习 CSS&lt;/li&gt;
+    &lt;li&gt;学习 JavaScript&lt;/li&gt;
+&lt;/ol&gt;
+            </div>
+            <div class="demo-box">
+                <ol>
+                    <li>学习 HTML
+                        <ul>
+                            <li>标签</li>
+                            <li>属性</li>
+                            <li>语义化</li>
+                        </ul>
+                    </li>
+                    <li>学习 CSS</li>
+                    <li>学习 JavaScript</li>
+                </ol>
+            </div>
+
+            <h3>3. 有序列表嵌套有序列表</h3>
+            <div class="code-box">
+&lt;ol&gt;
+    &lt;li&gt;第一章：基础
+        &lt;ol&gt;
+            &lt;li&gt;1.1 介绍&lt;/li&gt;
+            &lt;li&gt;1.2 安装&lt;/li&gt;
+            &lt;li&gt;1.3 配置&lt;/li&gt;
+        &lt;/ol&gt;
+    &lt;/li&gt;
+    &lt;li&gt;第二章：进阶
+        &lt;ol&gt;
+            &lt;li&gt;2.1 高级特性&lt;/li&gt;
+            &lt;li&gt;2.2 最佳实践&lt;/li&gt;
+        &lt;/ol&gt;
+    &lt;/li&gt;
+&lt;/ol&gt;
+            </div>
+            <div class="demo-box">
+                <ol>
+                    <li>第一章：基础
+                        <ol>
+                            <li>1.1 介绍</li>
+                            <li>1.2 安装</li>
+                            <li>1.3 配置</li>
+                        </ol>
+                    </li>
+                    <li>第二章：进阶
+                        <ol>
+                            <li>2.1 高级特性</li>
+                            <li>2.2 最佳实践</li>
+                        </ol>
+                    </li>
+                </ol>
+            </div>
+
+            <h3>4. 复杂的嵌套示例</h3>
+            <div class="demo-box">
+                <h4>📚 完整的学习计划</h4>
+                <ol>
+                    <li>前端开发基础
+                        <ol type="A">
+                            <li>HTML 基础
+                                <ul>
+                                    <li>标签和元素</li>
+                                    <li>属性</li>
+                                    <li>语义化</li>
+                                </ul>
+                            </li>
+                            <li>CSS 基础
+                                <ul>
+                                    <li>选择器</li>
+                                    <li>布局</li>
+                                    <li>响应式设计</li>
+                                </ul>
+                            </li>
+                            <li>JavaScript 基础
+                                <ul>
+                                    <li>变量和数据类型</li>
+                                    <li>函数</li>
+                                    <li>DOM 操作</li>
+                                </ul>
+                            </li>
+                        </ol>
+                    </li>
+                    <li>前端框架
+                        <ul>
+                            <li>React</li>
+                            <li>Vue</li>
+                            <li>Angular</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+
+        </section>
+
+        <!-- 定义列表部分 -->
+        <section id="definition">
+            <h2>第 4 部分：定义列表 &lt;dl&gt;</h2>
+
+            <h3>什么是定义列表？</h3>
+            <p>定义列表（Definition List）用于显示术语和对应的定义。由三个标签组成：</p>
+            <ul>
+                <li><code>&lt;dl&gt;</code> - Definition List（定义列表容器）</li>
+                <li><code>&lt;dt&gt;</code> - Definition Term（定义的术语）</li>
+                <li><code>&lt;dd&gt;</code> - Definition Description（术语的定义）</li>
+            </ul>
+
+            <div class="note">
+                <strong>何时使用定义列表？</strong>
+                <ul>
+                    <li>词汇表</li>
+                    <li>常见问题（FAQ）</li>
+                    <li>产品规格</li>
+                    <li>任何"术语-定义"的配对</li>
+                </ul>
+            </div>
+
+            <h3>1. 最基础的定义列表</h3>
+            <div class="code-box">
+&lt;dl&gt;
+    &lt;dt&gt;HTML&lt;/dt&gt;
+    &lt;dd&gt;超文本标记语言，用于创建网页结构&lt;/dd&gt;
+    
+    &lt;dt&gt;CSS&lt;/dt&gt;
+    &lt;dd&gt;层叠样式表，用于设计网页样式&lt;/dd&gt;
+    
+    &lt;dt&gt;JavaScript&lt;/dt&gt;
+    &lt;dd&gt;网页脚本语言，用于添加交互功能&lt;/dd&gt;
+&lt;/dl&gt;
+            </div>
+
+            <div class="demo-box">
+                <p><strong>效果：</strong></p>
+                <dl>
+                    <dt>HTML</dt>
+                    <dd>超文本标记语言，用于创建网页结构</dd>
+                    
+                    <dt>CSS</dt>
+                    <dd>层叠样式表，用于设计网页样式</dd>
+                    
+                    <dt>JavaScript</dt>
+                    <dd>网页脚本语言，用于添加交互功能</dd>
+                </dl>
+            </div>
+
+            <h3>2. 一个术语多个定义</h3>
+            <div class="code-box">
+&lt;dl&gt;
+    &lt;dt&gt;Python&lt;/dt&gt;
+    &lt;dd&gt;一种编程语言&lt;/dd&gt;
+    &lt;dd&gt;简单易学，适合初学者&lt;/dd&gt;
+    &lt;dd&gt;广泛应用于数据科学和机器学习&lt;/dd&gt;
+&lt;/dl&gt;
+            </div>
+
+            <div class="demo-box">
+                <dl>
+                    <dt>Python</dt>
+                    <dd>一种编程语言</dd>
+                    <dd>简单易学，适合初学者</dd>
+                    <dd>广泛应用于数据科学和机器学习</dd>
+                </dl>
+            </div>
+
+            <h3>3. 实际应用示例</h3>
+
+            <h4>计算机术语词汇表</h4>
+            <div class="demo-box">
+                <h4>💻 常见计算机术语</h4>
+                <dl>
+                    <dt>API</dt>
+                    <dd>应用程序编程接口（Application Programming Interface），不同软件之间交互的方式</dd>
+                    
+                    <dt>Bug</dt>
+                    <dd>程序中的错误或缺陷</dd>
+                    
+                    <dt>Cache</dt>
+                    <dd>缓存，用于临时存储数据以提高访问速度</dd>
+                    
+                    <dt>Database</dt>
+                    <dd>数据库，用于有组织地存储和管理数据的系统</dd>
+                    
+                    <dt>Framework</dt>
+                    <dd>框架，提供基础功能的软件平台</dd>
+                </dl>
+            </div>
+
+            <h4>产品规格</h4>
+            <div class="demo-box">
+                <h4>📱 iPhone 15 Pro 规格</h4>
+                <dl>
+                    <dt>屏幕尺寸</dt>
+                    <dd>6.1 英寸超视网膜 XDR 显示屏</dd>
+                    
+                    <dt>处理器</dt>
+                    <dd>A17 Pro 芯片</dd>
+                    
+                    <dt>摄像头</dt>
+                    <dd>4800 万像素主摄像头</dd>
+                    <dd>1200 万像素超广角摄像头</dd>
+                    <dd>1200 万像素长焦摄像头</dd>
+                    
+                    <dt>存储</dt>
+                    <dd>128GB、256GB、512GB、1TB</dd>
+                    
+                    <dt>电池续航</dt>
+                    <dd>视频播放最长可达 23 小时</dd>
+                </dl>
+            </div>
+
+            <h4>FAQ（常见问题）</h4>
+            <div class="demo-box">
+                <h4>❓ 常见问题</h4>
+                <dl>
+                    <dt>什么是 HTML？</dt>
+                    <dd>HTML 是超文本标记语言的缩写，是创建网页的标准标记语言。</dd>
+                    
+                    <dt>学习 HTML 需要多长时间？</dt>
+                    <dd>基础知识通常需要 1-2 周，深入掌握需要几个月的练习。</dd>
+                    
+                    <dt>HTML 和 HTML5 有什么区别？</dt>
+                    <dd>HTML5 是 HTML 的最新版本，增加了很多新特性如视频、音频、Canvas 等。</dd>
+                </dl>
+            </div>
+
+        </section>
+
+        <!-- 样式对比部分 -->
+        <section id="comparison">
+            <h2>第 5 部分：列表样式对比</h2>
+
+            <h3>list-style-type 完整列表</h3>
+            <table>
+                <tr>
+                    <th>类别</th>
+                    <th>值</th>
+                    <th>效果</th>
+                    <th>说明</th>
+                </tr>
+                <tr>
+                    <td rowspan="4">无序列表</td>
+                    <td>disc</td>
+                    <td>●</td>
+                    <td>实心圆（默认）</td>
+                </tr>
+                <tr>
+                    <td>circle</td>
+                    <td>○</td>
+                    <td>空心圆</td>
+                </tr>
+                <tr>
+                    <td>square</td>
+                    <td>■</td>
+                    <td>方块</td>
+                </tr>
+                <tr>
+                    <td>none</td>
+                    <td>（无）</td>
+                    <td>无标记</td>
+                </tr>
+                <tr>
+                    <td rowspan="5">有序列表</td>
+                    <td>decimal</td>
+                    <td>1, 2, 3</td>
+                    <td>数字（默认）</td>
+                </tr>
+                <tr>
+                    <td>upper-alpha</td>
+                    <td>A, B, C</td>
+                    <td>大写字母</td>
+                </tr>
+                <tr>
+                    <td>lower-alpha</td>
+                    <td>a, b, c</td>
+                    <td>小写字母</td>
+                </tr>
+                <tr>
+                    <td>upper-roman</td>
+                    <td>I, II, III</td>
+                    <td>大写罗马数字</td>
+                </tr>
+                <tr>
+                    <td>lower-roman</td>
+                    <td>i, ii, iii</td>
+                    <td>小写罗马数字</td>
+                </tr>
+            </table>
+
+        </section>
+
+        <!-- 最佳实践 -->
+        <section id="best-practices">
+            <h2>第 6 部分：最佳实践</h2>
+
+            <h3>✅ 好的做法</h3>
+            <div class="demo-box">
+                <h4>1. 使用正确的列表类型</h4>
+                <p><strong>有顺序的内容 → 用 &lt;ol&gt;</strong></p>
+                <ol>
+                    <li>第一步：准备材料</li>
+                    <li>第二步：开始制作</li>
+                    <li>第三步：完成</li>
+                </ol>
+
+                <p><strong>无顺序的内容 → 用 &lt;ul&gt;</strong></p>
+                <ul>
+                    <li>苹果</li>
+                    <li>香蕉</li>
+                    <li>橙子</li>
+                </ul>
+
+                <p><strong>术语和定义 → 用 &lt;dl&gt;</strong></p>
+                <dl>
+                    <dt>HTML</dt>
+                    <dd>超文本标记语言</dd>
+                </dl>
+            </div>
+
+            <h3>✅ 保持结构清晰</h3>
+            <div class="code-box">
+&lt;!-- 好的做法：缩进清晰 --&gt;
+&lt;ul&gt;
+    &lt;li&gt;项目 1&lt;/li&gt;
+    &lt;li&gt;项目 2
+        &lt;ul&gt;
+            &lt;li&gt;子项目 2.1&lt;/li&gt;
+            &lt;li&gt;子项目 2.2&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/li&gt;
+&lt;/ul&gt;
+            </div>
+
+            <h3>❌ 避免的做法</h3>
+            <div class="demo-box">
+                <p><strong>1. 不要在列表外使用 &lt;li&gt;</strong></p>
+                <div class="code-box">
+&lt;!-- ❌ 错误 --&gt;
+&lt;li&gt;单独的项目&lt;/li&gt;
+
+&lt;!-- ✅ 正确 --&gt;
+&lt;ul&gt;
+    &lt;li&gt;项目&lt;/li&gt;
+&lt;/ul&gt;
+                </div>
+
+                <p><strong>2. 不要用列表来控制缩进</strong></p>
+                <div class="code-box">
+&lt;!-- ❌ 错误：仅为了缩进而使用列表 --&gt;
+&lt;ul&gt;
+    &lt;li&gt;这不是列表项&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!-- ✅ 正确：使用 CSS 控制缩进 --&gt;
+&lt;p style="margin-left: 2rem;"&gt;缩进的段落&lt;/p&gt;
+                </div>
+
+                <p><strong>3. 不要嵌套不当</strong></p>
+                <div class="code-box">
+&lt;!-- ❌ 错误 --&gt;
+&lt;ul&gt;
+    &lt;ul&gt;
+        &lt;li&gt;子项&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/ul&gt;
+
+&lt;!-- ✅ 正确 --&gt;
+&lt;ul&gt;
+    &lt;li&gt;父项
+        &lt;ul&gt;
+            &lt;li&gt;子项&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/li&gt;
+&lt;/ul&gt;
+                </div>
+            </div>
+
+        </section>
+
+        <!-- 综合练习 -->
+        <section id="exercise">
+            <h2>综合练习</h2>
+
+            <h3>创建一个完整的网站结构</h3>
+            <div class="demo-box">
+                <h4>🌐 我的网站结构</h4>
+                <ul>
+                    <li><strong>首页</strong> (index.html)
+                        <ul>
+                            <li>欢迎标题</li>
+                            <li>简介</li>
+                            <li>最新文章列表</li>
+                        </ul>
+                    </li>
+                    <li><strong>关于页面</strong> (about.html)
+                        <ul>
+                            <li>个人简介</li>
+                            <li>技能列表
+                                <ul>
+                                    <li>HTML</li>
+                                    <li>CSS</li>
+                                    <li>JavaScript</li>
+                                </ul>
+                            </li>
+                            <li>工作经历</li>
+                        </ul>
+                    </li>
+                    <li><strong>项目页面</strong> (projects.html)
+                        <ol>
+                            <li>项目 1：个人博客</li>
+                            <li>项目 2：电商网站</li>
+                            <li>项目 3：移动应用</li>
+                        </ol>
+                    </li>
+                    <li><strong>联系页面</strong> (contact.html)
+                        <dl>
+                            <dt>邮箱</dt>
+                            <dd>contact@example.com</dd>
+                            
+                            <dt>电话</dt>
+                            <dd>+86 138 0013 8000</dd>
+                            
+                            <dt>地址</dt>
+                            <dd>北京市朝阳区</dd>
+                        </dl>
+                    </li>
+                </ul>
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer style="text-align: center; padding: 2rem; background: #333; color: white; margin-top: 2rem;">
+        <p>&copy; 2024 列表完全教程</p>
+        <p>掌握列表，让内容更有条理！</p>
+    </footer>
+
+</body>
+</html>

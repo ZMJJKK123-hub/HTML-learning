@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CSS 第9步：排版与盒模型进阶</title>
+  <style>
+    :root{
+      --brand:#2563eb; --accent:#7c3aed; --bg:#f7f8fb; --card:#ffffff; --text:#111827; --muted:#6b7280;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Microsoft YaHei", sans-serif;
+      color:var(--text); background:var(--bg); line-height:1.6;
+    }
+    .container{max-width:1080px;margin:0 auto;padding:24px}
+    header{background:linear-gradient(135deg,var(--brand),var(--accent));color:#fff;border-radius:14px;padding:28px 24px;margin-bottom:24px;text-align:center}
+    header h1{margin:0 0 6px}
+    section{background:var(--card);border-radius:12px;box-shadow:0 6px 20px rgba(17,24,39,.08);padding:22px;margin-bottom:22px}
+    h2{color:var(--brand);border-bottom:2px solid var(--brand);padding-bottom:8px;margin-top:0}
+    h3{color:var(--accent)}
+
+    .code{background:#0b1020;color:#e5e7eb;border-radius:8px;padding:14px;overflow:auto;font:14px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;margin:12px 0}
+    .note{background:#fffbe6;border-left:4px solid #f59e0b;padding:10px 12px;border-radius:6px;margin:12px 0;color:#4b5563}
+    .grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+
+    /* 排版：字体、字号、行高、字重、字距、对齐 */
+    .typo-demo p{margin:6px 0}
+    .font-stack{font-family: Georgia, "Times New Roman", Times, serif}
+    .font-sans{font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial}
+    .font-mono{font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace}
+    .size-sm{font-size:0.875rem}
+    .size-base{font-size:1rem}
+    .size-lg{font-size:1.25rem}
+    .lh-tight{line-height:1.2}
+    .lh-relaxed{line-height:1.8}
+    .weight-400{font-weight:400}
+    .weight-600{font-weight:600}
+    .spacing{letter-spacing:0.04em}
+    .align-center{text-align:center}
+    .align-justify{text-align:justify}
+    .muted{color:var(--muted)}
+    .leading-cap::first-letter{font-size:2.25rem; font-weight:700; color:var(--brand)}
+
+    /* 单位与比例：rem 基准、响应式字体 */
+    html{font-size:16px}
+    .scale-demo .title{font-size:clamp(1.25rem, 2.5vw + .5rem, 2rem)}
+    .scale-demo .sub{font-size:clamp(1rem, 1.2vw + .4rem, 1.25rem); color:var(--muted)}
+
+    /* 文本装饰与换行控制 */
+    .decoration a{color:var(--brand); text-decoration:underline; text-underline-offset:3px}
+    .decoration a:hover{filter:brightness(0.9)}
+    .nowrap{white-space:nowrap}
+    .break-words{overflow-wrap:break-word}
+
+    /* display 模型 */
+    .block{display:block; background:#eff6ff; padding:8px; border:1px solid #bfdbfe; margin:6px 0}
+    .inline{display:inline; background:#ecfccb; padding:8px; border:1px solid #bbf7d0}
+    .inline-block{display:inline-block; background:#fce7f3; padding:8px; border:1px solid #fbcfe8}
+
+    /* margin 折叠演示区 */
+    .collapse-wrap{background:#f9fafb; padding:12px; border:1px dashed #e5e7eb}
+    .collapse-wrap .box{background:#e0e7ff; border:1px solid #c7d2fe; margin:20px 0; padding:8px}
+    .collapse-note{font-size:14px; color:#6b7280}
+
+    /* 边框、圆角、阴影与轮廓 */
+    .shape-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px}
+    .shape{padding:16px; border:2px solid #d1d5db; border-radius:8px; background:#f8fafc}
+    .shape.round{border-radius:999px}
+    .shape.shadow{box-shadow:0 10px 25px rgba(0,0,0,.08)}
+    .shape.outline:focus{outline:3px solid rgba(37,99,235,.35)}
+
+    /* 盒模型总览卡片 */
+    .box-card{display:flex; gap:16px; flex-wrap:wrap}
+    .layer{min-width:220px; padding:12px; border-radius:10px}
+    .content{background:#fde68a}
+    .padding{background:#bbf7d0}
+    .border{background:#fca5a5}
+    .margin{background:#bfdbfe}
+
+    /* 工具类 */
+    .btn{background:var(--brand); color:#fff; border:none; border-radius:8px; padding:10px 14px; cursor:pointer}
+    .btn:hover{filter:brightness(1.05)}
+    .kbd{font:12px ui-monospace, SFMono-Regular, Menlo, Consolas; background:#111827; color:#fff; padding:2px 6px; border-radius:4px}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>✍️ CSS 第 9 步：排版与盒模型进阶</h1>
+      <p>掌握文字排版细节（字体/行高/对齐/间距）与盒模型高级概念（margin 折叠、display 等）</p>
+    </header>
+
+    <section>
+      <h2>1. 字体与字号（Font Family / Size）</h2>
+      <div class="grid typo-demo">
+        <div>
+          <h3>字体族（font-family）</h3>
+          <p class="font-stack">衬线字体（serif）：更正式，适合阅读型内容</p>
+          <p class="font-sans">无衬线字体（sans-serif）：现代、清爽，网页常用</p>
+          <p class="font-mono">等宽字体（monospace）：代码与对齐用</p>
+        </div>
+        <div>
+          <h3>字号（px/em/rem/响应式）</h3>
+          <p class="size-sm">0.875rem 小号文字</p>
+          <p class="size-base">1rem 基准文字（随 html 调整）</p>
+          <p class="size-lg">1.25rem 稍大文字</p>
+          <div class="scale-demo">
+            <p class="title">clamp() 自适应标题</p>
+            <p class="sub">根据视口宽度平滑缩放的副标题</p>
+          </div>
+        </div>
+      </div>
+      <div class="note">建议：用 rem 做排版基准，配合 clamp() 做自适应标题，统一视觉层级。</div>
+      <div class="code">
+html { font-size: 16px }
+.title { font-size: clamp(1.25rem, 2.5vw + .5rem, 2rem) }
+.small { font-size: .875rem } /* 14px */
+      </div>
+    </section>
+
+    <section>
+      <h2>2. 行高、字重、字距与对齐</h2>
+      <div class="grid typo-demo">
+        <div>
+          <h3>行高（line-height）</h3>
+          <p class="lh-tight">紧凑的行高（1.2），适合标题</p>
+          <p class="lh-relaxed">宽松的行高（1.8），适合长段落阅读</p>
+        </div>
+        <div>
+          <h3>字重 / 字距 / 对齐</h3>
+          <p class="weight-400">常规权重（400）</p>
+          <p class="weight-600 spacing">半粗，增加字距（letter-spacing）</p>
+          <p class="align-center">居中对齐（text-align: center）</p>
+          <p class="align-justify">两端对齐（justify）可以让段落左右对齐，<span class="muted">但中英文混排要注意断行体验</span>。</p>
+        </div>
+      </div>
+      <div class="code">
+.lh-tight { line-height: 1.2 }
+.lh-relaxed { line-height: 1.8 }
+.weight-600 { font-weight: 600 }
+.spacing { letter-spacing: .04em }
+.align-justify { text-align: justify }
+      </div>
+    </section>
+
+    <section>
+      <h2>3. 文本修饰与换行控制</h2>
+      <div class="grid">
+        <div class="decoration">
+          <h3>文本装饰</h3>
+          <p>链接默认带下划线：<a href="#">示例链接</a></p>
+          <p>可通过 <span class="kbd">text-decoration</span> / <span class="kbd">text-underline-offset</span> 调整样式与位置。</p>
+        </div>
+        <div>
+          <h3>换行与溢出</h3>
+          <p class="nowrap">nowrap：这是一行很长很长很长很长很长的文字不会自动换行</p>
+          <p class="break-words" style="max-width:320px">break-word：averyveryverylongwordaveryveryverylongword 将在单词内部断开</p>
+        </div>
+      </div>
+      <div class="code">
+.decoration a{ text-decoration: underline; text-underline-offset: 3px }
+.nowrap{ white-space: nowrap }
+.break-words{ overflow-wrap: break-word }
+      </div>
+    </section>
+
+    <section>
+      <h2>4. display：block / inline / inline-block</h2>
+      <p>理解显示类型有助于正确布局与对齐：</p>
+      <div>
+        <div class="block">block：独占一行，可设置宽高、内外边距</div>
+        <span class="inline">inline：不换行，宽高不可直接生效</span>
+        <span class="inline-block">inline-block：不换行，但可设置宽高</span>
+      </div>
+      <div class="code">
+.block{ display:block }
+.inline{ display:inline }
+.inline-block{ display:inline-block }
+      </div>
+    </section>
+
+    <section>
+      <h2>5. margin 折叠（Margin Collapsing）</h2>
+      <div class="collapse-wrap">
+        <div class="box">盒 A（上外边距 20px）</div>
+        <div class="box">盒 B（上外边距 20px）</div>
+        <p class="collapse-note">相邻块级元素之间的垂直外边距会发生折叠，取较大者，而非相加。</p>
+      </div>
+      <div class="note">防止折叠的常见方式：在父容器开启 BFC（例如 `overflow: auto` 或 `display: flow-root`）。</div>
+      <div class="code">
+.parent{ overflow:auto } /* 创建 BFC，阻止子元素与父元素之间的折叠 */
+.flow-root{ display: flow-root } /* 现代语义化方案 */
+      </div>
+    </section>
+
+    <section>
+      <h2>6. 边框、圆角、阴影与轮廓</h2>
+      <div class="shape-grid">
+        <button class="shape" style="border-radius:6px">普通边框与圆角</button>
+        <button class="shape round">完全圆角（胶囊）</button>
+        <button class="shape shadow">阴影提升层级</button>
+        <button class="shape outline" tabindex="0">聚焦轮廓（试试键盘 <span class="kbd">Tab</span>）</button>
+      </div>
+      <div class="code">
+.box{ border:1px solid #e5e7eb; border-radius:8px; box-shadow:0 10px 25px rgba(0,0,0,.08) }
+.box:focus{ outline:3px solid rgba(37,99,235,.35) }
+      </div>
+    </section>
+
+    <section>
+      <h2>7. 盒模型可视化</h2>
+      <div class="box-card">
+        <div class="layer content">content（内容）</div>
+        <div class="layer padding">padding（内边距）</div>
+        <div class="layer border">border（边框）</div>
+        <div class="layer margin">margin（外边距）</div>
+      </div>
+    </section>
+
+    <section>
+      <h2>综合练习</h2>
+      <ol>
+        <li>为一段长文本设置合适的 `line-height` 与 `text-align: justify`，确保中英文混排观感舒适。</li>
+        <li>实现一个标题体系：`h1/h2/h3` 使用 `clamp()` 做响应式字号。</li>
+        <li>构建一个信息卡片：使用 `inline-block` 做标签行内布局，卡片 hover 时添加阴影与轻微提升。</li>
+        <li>创建一个父容器使其子元素不发生 margin 折叠（任选 BFC 技术）。</li>
+      </ol>
+      <button class="btn" onclick="alert('加油完成练习！')">完成后点我 ✅</button>
+    </section>
+
+    <footer style="text-align:center;color:var(--muted)">
+      <p>&copy; 2024 CSS 第9步 · 排版与盒模型进阶</p>
+    </footer>
+  </div>
+</body>
+</html>

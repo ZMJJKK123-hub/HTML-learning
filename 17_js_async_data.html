@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>第 17 步：异步与数据交互</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #0b1220;
+      --card: #0f172a;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --border: #1f2937;
+      --danger: #f87171;
+      --success: #34d399;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 24px;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.12);
+      color: var(--accent);
+      font-size: 14px;
+    }
+    .tag { display: inline-block; padding: 2px 8px; border-radius: 999px; background: #1f2937; border: 1px solid var(--border); color: var(--muted); font-size: 12px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.24);
+    }
+    .card h3 { margin: 0 0 6px; }
+    .muted { color: var(--muted); font-size: 14px; }
+    button {
+      cursor: pointer;
+      padding: 8px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #1f2937;
+      color: var(--text);
+      transition: transform 0.15s ease, border-color 0.15s ease;
+    }
+    button:hover { transform: translateY(-1px); border-color: var(--accent); }
+    .row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .list { margin-top: 10px; padding: 0; list-style: none; }
+    .item { padding: 10px; border: 1px solid var(--border); border-radius: 10px; margin-bottom: 8px; }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 999px; background: #1f2937; border: 1px solid var(--border); color: var(--muted); font-size: 12px; }
+    .status { margin-top: 6px; font-size: 14px; }
+    .error { color: var(--danger); }
+    .ok { color: var(--success); }
+    .loading { color: var(--accent); }
+    pre {
+      background: #0c1628;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      overflow: auto;
+      color: #c7d2fe;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <div class="pill">第 17 步 · 异步与数据交互</div>
+      <div class="muted">配套教程：教程_JS_17_异步与数据交互.md · 上一站：16_js_dom_events.html</div>
+    </div>
+    <div class="row">
+      <a href="16_js_dom_events.html" class="tag">返回第 16 步</a>
+      <a href="教程_JS_17_异步与数据交互.md" class="tag">阅读教程</a>
+    </div>
+  </header>
+
+  <div class="grid">
+    <section class="card">
+      <h3>Promise 与 async/await</h3>
+      <p class="muted">模拟接口：加载 → 成功 / 失败。</p>
+      <div class="row" style="margin-bottom:8px;">
+        <button id="btn-load">加载数据</button>
+        <button id="btn-fail">加载失败</button>
+      </div>
+      <div class="status" id="status"></div>
+      <ul class="list" id="list"></ul>
+    </section>
+
+    <section class="card">
+      <h3>并发与全局状态</h3>
+      <p class="muted">一次请求内并发多个 Promise，合并结果。</p>
+      <button id="btn-concurrent">并发拉取</button>
+      <div class="status" id="concurrent-status"></div>
+      <pre id="concurrent-result"></pre>
+    </section>
+
+    <section class="card">
+      <h3>错误处理与重试</h3>
+      <p class="muted">捕获异常，提示用户，支持 1 次重试。</p>
+      <div class="row" style="margin-bottom:8px;">
+        <button id="btn-retry">尝试加载（可能失败）</button>
+        <button id="btn-reset">重置</button>
+      </div>
+      <div class="status" id="retry-status"></div>
+    </section>
+  </div>
+
+  <script type="module">
+    // 简易模拟接口
+    const fakeFetch = (shouldFail = false, delay = 600) => {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          if (shouldFail) {
+            reject(new Error('网络异常，请稍后再试'));
+          } else {
+            resolve([
+              { id: 1, title: 'Design Tokens 完成' },
+              { id: 2, title: '异步模块拆分' },
+              { id: 3, title: '无障碍检查通过' },
+            ]);
+          }
+        }, delay);
+      });
+    };
+
+    const statusEl = document.querySelector('#status');
+    const listEl = document.querySelector('#list');
+    const btnLoad = document.querySelector('#btn-load');
+    const btnFail = document.querySelector('#btn-fail');
+
+    async function loadData(shouldFail = false) {
+      statusEl.textContent = '加载中...';
+      statusEl.className = 'status loading';
+      listEl.innerHTML = '';
+      try {
+        const data = await fakeFetch(shouldFail);
+        statusEl.textContent = '加载成功';
+        statusEl.className = 'status ok';
+        listEl.innerHTML = data.map(item => `<li class="item"><span class="badge">#${item.id}</span> ${item.title}</li>`).join('');
+      } catch (err) {
+        statusEl.textContent = err.message;
+        statusEl.className = 'status error';
+      }
+    }
+
+    btnLoad.addEventListener('click', () => loadData(false));
+    btnFail.addEventListener('click', () => loadData(true));
+
+    // 并发示例：一次请求三个数据源
+    const btnConcurrent = document.querySelector('#btn-concurrent');
+    const concurrentStatus = document.querySelector('#concurrent-status');
+    const concurrentResult = document.querySelector('#concurrent-result');
+
+    const fetchUser = () => new Promise(res => setTimeout(() => res({ id: 1, name: 'Ada' }), 400));
+    const fetchStats = () => new Promise(res => setTimeout(() => res({ score: 92, level: 3 }), 500));
+    const fetchPrefs = () => new Promise(res => setTimeout(() => res({ theme: 'dark', lang: 'zh-CN' }), 350));
+
+    btnConcurrent.addEventListener('click', async () => {
+      concurrentStatus.textContent = '并发请求中...';
+      concurrentStatus.className = 'status loading';
+      concurrentResult.textContent = '';
+      try {
+        const [user, stats, prefs] = await Promise.all([fetchUser(), fetchStats(), fetchPrefs()]);
+        concurrentStatus.textContent = '合并完成';
+        concurrentStatus.className = 'status ok';
+        concurrentResult.textContent = JSON.stringify({ user, stats, prefs }, null, 2);
+      } catch (err) {
+        concurrentStatus.textContent = err.message;
+        concurrentStatus.className = 'status error';
+      }
+    });
+
+    // 错误处理与重试
+    const btnRetry = document.querySelector('#btn-retry');
+    const btnReset = document.querySelector('#btn-reset');
+    const retryStatus = document.querySelector('#retry-status');
+
+    async function loadWithRetry(maxRetry = 1) {
+      retryStatus.textContent = '加载中...';
+      retryStatus.className = 'status loading';
+      let attempt = 0;
+      while (attempt <= maxRetry) {
+        try {
+          const data = await fakeFetch(Math.random() < 0.6, 500);
+          retryStatus.textContent = `成功（第 ${attempt + 1} 次尝试）: ${data.length} 条`;
+          retryStatus.className = 'status ok';
+          return;
+        } catch (err) {
+          attempt += 1;
+          if (attempt > maxRetry) {
+            retryStatus.textContent = `失败：${err.message}`;
+            retryStatus.className = 'status error';
+            return;
+          }
+        }
+      }
+    }
+
+    btnRetry.addEventListener('click', () => loadWithRetry(1));
+    btnReset.addEventListener('click', () => {
+      retryStatus.textContent = '';
+      retryStatus.className = 'status';
+    });
+  </script>
+</body>
+</html>

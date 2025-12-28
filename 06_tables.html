@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>表格完全教程 - 从基础到高级</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        section {
+            background: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #667eea;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 0.5rem;
+        }
+        h3 {
+            color: #764ba2;
+            margin-top: 1.5rem;
+        }
+        .code-box {
+            background: #f4f4f4;
+            border-left: 4px solid #667eea;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+        .demo-box {
+            background: #f0f7ff;
+            border: 2px solid #667eea;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        .note {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        
+        /* 基础表格样式 */
+        .basic-table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        .basic-table td, .basic-table th {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        
+        /* 带表头的表格 */
+        .styled-table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 1rem 0;
+        }
+        .styled-table th {
+            background-color: #667eea;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: bold;
+        }
+        .styled-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+        .styled-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .styled-table tr:hover {
+            background-color: #f0f7ff;
+        }
+        
+        /* 带分组的表格 */
+        .grouped-table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        .grouped-table thead {
+            background-color: #667eea;
+            color: white;
+        }
+        .grouped-table tfoot {
+            background-color: #764ba2;
+            color: white;
+            font-weight: bold;
+        }
+        .grouped-table th, .grouped-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        .grouped-table tbody tr:nth-child(odd) {
+            background-color: #f9f9f9;
+        }
+        .grouped-table tbody tr:hover {
+            background-color: #e3f2fd;
+        }
+        
+        /* 价格表样式 */
+        .price-table {
+            border-collapse: collapse;
+            width: 100%;
+            text-align: center;
+        }
+        .price-table th {
+            background-color: #764ba2;
+            color: white;
+            padding: 15px;
+            font-size: 1.1rem;
+        }
+        .price-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+        }
+        .price-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .price-table .price {
+            font-size: 1.5rem;
+            color: #667eea;
+            font-weight: bold;
+        }
+        
+        /* 课程表样式 */
+        .schedule-table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        .schedule-table th {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        .schedule-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        .schedule-table .time-col {
+            background-color: #e8f5e9;
+            font-weight: bold;
+        }
+        .schedule-table .class {
+            background-color: #fff3e0;
+        }
+        .schedule-table .break {
+            background-color: #e0f2f1;
+            color: #666;
+        }
+        
+        /* 对比表样式 */
+        .comparison-table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        .comparison-table th {
+            background-color: #333;
+            color: white;
+            padding: 12px;
+        }
+        .comparison-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        .comparison-table .feature-col {
+            background-color: #f5f5f5;
+            font-weight: bold;
+            text-align: left;
+        }
+        .comparison-table .yes {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        .comparison-table .no {
+            color: #f44336;
+        }
+        
+        /* 数据表格样式 */
+        .data-table {
+            border-collapse: collapse;
+            width: 100%;
+            font-size: 0.9rem;
+        }
+        .data-table th {
+            background-color: #2196F3;
+            color: white;
+            padding: 10px;
+            text-align: left;
+        }
+        .data-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        .data-table tr:nth-child(even) {
+            background-color: #f5f5f5;
+        }
+        .data-table .number {
+            text-align: right;
+        }
+        
+        table {
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>📊 表格完全教程</h1>
+        <p>学习 HTML 表格：从基础结构到复杂应用</p>
+    </header>
+
+    <main>
+        
+        <!-- 第 1 部分：基础表格 -->
+        <section id="basic">
+            <h2>第 1 部分：基础表格结构</h2>
+
+            <h3>什么是表格？</h3>
+            <p>表格用于以行和列的形式展示数据。就像 Excel 表格一样，由横向的<strong>行</strong>和纵向的<strong>列</strong>组成。</p>
+
+            <div class="note">
+                <strong>何时使用表格？</strong>
+                <ul>
+                    <li>展示数据（成绩单、销售数据）</li>
+                    <li>对比信息（产品对比、价格表）</li>
+                    <li>时间表（课程表、日程安排）</li>
+                    <li>任何需要结构化展示的数据</li>
+                </ul>
+                <strong>⚠️ 不要用表格来布局网页！</strong>（用 CSS 布局）
+            </div>
+
+            <h3>1. 最简单的表格</h3>
+            <div class="code-box">
+&lt;table&gt;
+    &lt;tr&gt;
+        &lt;td&gt;单元格 1&lt;/td&gt;
+        &lt;td&gt;单元格 2&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;单元格 3&lt;/td&gt;
+        &lt;td&gt;单元格 4&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+            </div>
+
+            <div class="demo-box">
+                <p><strong>效果：</strong></p>
+                <table class="basic-table">
+                    <tr>
+                        <td>单元格 1</td>
+                        <td>单元格 2</td>
+                    </tr>
+                    <tr>
+                        <td>单元格 3</td>
+                        <td>单元格 4</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="note">
+                <strong>标签说明：</strong>
+                <ul>
+                    <li><code>&lt;table&gt;</code> - Table（表格容器）</li>
+                    <li><code>&lt;tr&gt;</code> - Table Row（表格行）</li>
+                    <li><code>&lt;td&gt;</code> - Table Data（表格数据单元格）</li>
+                </ul>
+                <strong>记忆技巧：</strong>从外到内 → table（表格） → tr（行） → td（单元格）
+            </div>
+
+            <h3>2. 一个实际的例子</h3>
+            <div class="code-box">
+&lt;table&gt;
+    &lt;tr&gt;
+        &lt;td&gt;姓名&lt;/td&gt;
+        &lt;td&gt;年龄&lt;/td&gt;
+        &lt;td&gt;城市&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;张三&lt;/td&gt;
+        &lt;td&gt;25&lt;/td&gt;
+        &lt;td&gt;北京&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;李四&lt;/td&gt;
+        &lt;td&gt;30&lt;/td&gt;
+        &lt;td&gt;上海&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+            </div>
+
+            <div class="demo-box">
+                <table class="basic-table">
+                    <tr>
+                        <td>姓名</td>
+                        <td>年龄</td>
+                        <td>城市</td>
+                    </tr>
+                    <tr>
+                        <td>张三</td>
+                        <td>25</td>
+                        <td>北京</td>
+                    </tr>
+                    <tr>
+                        <td>李四</td>
+                        <td>30</td>
+                        <td>上海</td>
+                    </tr>
+                </table>
+            </div>
+
+        </section>
+
+        <!-- 第 2 部分：表头 -->
+        <section id="header">
+            <h2>第 2 部分：表头 &lt;th&gt;</h2>
+
+            <h3>什么是表头？</h3>
+            <p>表头（Table Header）是表格的标题行，用 <code>&lt;th&gt;</code> 标签表示。浏览器会自动把表头显示为<strong>粗体</strong>和<strong>居中</strong>。</p>
+
+            <h3>使用 &lt;th&gt; 创建表头</h3>
+            <div class="code-box">
+&lt;table&gt;
+    &lt;tr&gt;
+        &lt;th&gt;姓名&lt;/th&gt;
+        &lt;th&gt;年龄&lt;/th&gt;
+        &lt;th&gt;城市&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;张三&lt;/td&gt;
+        &lt;td&gt;25&lt;/td&gt;
+        &lt;td&gt;北京&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;李四&lt;/td&gt;
+        &lt;td&gt;30&lt;/td&gt;
+        &lt;td&gt;上海&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+            </div>
+
+            <div class="demo-box">
+                <p><strong>效果：</strong></p>
+                <table class="styled-table">
+                    <tr>
+                        <th>姓名</th>
+                        <th>年龄</th>
+                        <th>城市</th>
+                    </tr>
+                    <tr>
+                        <td>张三</td>
+                        <td>25</td>
+                        <td>北京</td>
+                    </tr>
+                    <tr>
+                        <td>李四</td>
+                        <td>30</td>
+                        <td>上海</td>
+                    </tr>
+                </table>
+                <p style="font-size: 0.9rem; color: #666;">
+                    <strong>注意：</strong>第一行使用了 &lt;th&gt;，显示为蓝色背景（通过 CSS 样式）
+                </p>
+            </div>
+
+            <h3>垂直表头</h3>
+            <p>表头不一定在顶部，也可以在左侧：</p>
+            <div class="code-box">
+&lt;table&gt;
+    &lt;tr&gt;
+        &lt;th&gt;姓名&lt;/th&gt;
+        &lt;td&gt;张三&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;th&gt;年龄&lt;/th&gt;
+        &lt;td&gt;25&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;th&gt;城市&lt;/th&gt;
+        &lt;td&gt;北京&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+            </div>
+
+            <div class="demo-box">
+                <table class="styled-table">
+                    <tr>
+                        <th>姓名</th>
+                        <td>张三</td>
+                    </tr>
+                    <tr>
+                        <th>年龄</th>
+                        <td>25</td>
+                    </tr>
+                    <tr>
+                        <th>城市</th>
+                        <td>北京</td>
+                    </tr>
+                </table>
+            </div>
+
+        </section>
+
+        <!-- 第 3 部分：表格分组 -->
+        <section id="grouping">
+            <h2>第 3 部分：表格分组</h2>
+
+            <h3>为什么要分组？</h3>
+            <p>大型表格可以分为三个部分：</p>
+            <ul>
+                <li><code>&lt;thead&gt;</code> - 表头部分</li>
+                <li><code>&lt;tbody&gt;</code> - 表主体部分</li>
+                <li><code>&lt;tfoot&gt;</code> - 表脚部分（总计、摘要等）</li>
+            </ul>
+
+            <div class="note">
+                <strong>好处：</strong>
+                <ul>
+                    <li>结构更清晰</li>
+                    <li>便于应用不同的样式</li>
+                    <li>打印时可以让表头在每页重复显示</li>
+                    <li>屏幕阅读器能更好地理解表格</li>
+                </ul>
+            </div>
+
+            <h3>完整的分组示例</h3>
+            <div class="code-box">
+&lt;table&gt;
+    &lt;thead&gt;
+        &lt;tr&gt;
+            &lt;th&gt;商品&lt;/th&gt;
+            &lt;th&gt;单价&lt;/th&gt;
+            &lt;th&gt;数量&lt;/th&gt;
+            &lt;th&gt;小计&lt;/th&gt;
+        &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+        &lt;tr&gt;
+            &lt;td&gt;苹果&lt;/td&gt;
+            &lt;td&gt;¥5&lt;/td&gt;
+            &lt;td&gt;3&lt;/td&gt;
+            &lt;td&gt;¥15&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt;香蕉&lt;/td&gt;
+            &lt;td&gt;¥3&lt;/td&gt;
+            &lt;td&gt;5&lt;/td&gt;
+            &lt;td&gt;¥15&lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/tbody&gt;
+    &lt;tfoot&gt;
+        &lt;tr&gt;
+            &lt;td colspan="3"&gt;总计&lt;/td&gt;
+            &lt;td&gt;¥30&lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/tfoot&gt;
+&lt;/table&gt;
+            </div>
+
+            <div class="demo-box">
+                <table class="grouped-table">
+                    <thead>
+                        <tr>
+                            <th>商品</th>
+                            <th>单价</th>
+                            <th>数量</th>
+                            <th>小计</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>苹果</td>
+                            <td>¥5</td>
+                            <td>3</td>
+                            <td>¥15</td>
+                        </tr>
+                        <tr>
+                            <td>香蕉</td>
+                            <td>¥3</td>
+                            <td>5</td>
+                            <td>¥15</td>
+                        </tr>
+                        <tr>
+                            <td>橙子</td>
+                            <td>¥4</td>
+                            <td>2</td>
+                            <td>¥8</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3">总计</td>
+                            <td>¥38</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+        </section>
+
+        <!-- 第 4 部分：合并单元格 -->
+        <section id="spanning">
+            <h2>第 4 部分：合并单元格</h2>
+
+            <h3>colspan - 横向合并（跨列）</h3>
+            <p><code>colspan</code> 用于合并横向的单元格（跨多列）。</p>
+
+            <div class="code-box">
+&lt;table&gt;
+    &lt;tr&gt;
+        &lt;td colspan="2"&gt;这个单元格占 2 列&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;列 1&lt;/td&gt;
+        &lt;td&gt;列 2&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+            </div>
+
+            <div class="demo-box">
+                <table class="basic-table">
+                    <tr>
+                        <td colspan="2" style="background-color: #ffe0b2; text-align: center; font-weight: bold;">
+                            这个单元格占 2 列
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>列 1</td>
+                        <td>列 2</td>
+                    </tr>
+                </table>
+            </div>
+
+            <h3>rowspan - 纵向合并（跨行）</h3>
+            <p><code>rowspan</code> 用于合并纵向的单元格（跨多行）。</p>
+
+            <div class="code-box">
+&lt;table&gt;
+    &lt;tr&gt;
+        &lt;td rowspan="2"&gt;这个单元格占 2 行&lt;/td&gt;
+        &lt;td&gt;行 1, 列 2&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;行 2, 列 2&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+            </div>
+
+            <div class="demo-box">
+                <table class="basic-table">
+                    <tr>
+                        <td rowspan="2" style="background-color: #c8e6c9; text-align: center; font-weight: bold; vertical-align: middle;">
+                            这个单元格占 2 行
+                        </td>
+                        <td>行 1, 列 2</td>
+                    </tr>
+                    <tr>
+                        <td>行 2, 列 2</td>
+                    </tr>
+                </table>
+            </div>
+
+            <h3>复杂的合并示例</h3>
+            <div class="demo-box">
+                <h4>课程表</h4>
+                <table class="schedule-table">
+                    <thead>
+                        <tr>
+                            <th>时间</th>
+                            <th>星期一</th>
+                            <th>星期二</th>
+                            <th>星期三</th>
+                            <th>星期四</th>
+                            <th>星期五</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="time-col">08:00-09:00</td>
+                            <td class="class">数学</td>
+                            <td class="class">英语</td>
+                            <td class="class">语文</td>
+                            <td class="class">数学</td>
+                            <td class="class">英语</td>
+                        </tr>
+                        <tr>
+                            <td class="time-col">09:00-10:00</td>
+                            <td class="class">物理</td>
+                            <td class="class">化学</td>
+                            <td class="class">生物</td>
+                            <td class="class">物理</td>
+                            <td class="class">化学</td>
+                        </tr>
+                        <tr>
+                            <td class="time-col">10:00-10:15</td>
+                            <td colspan="5" class="break">课间休息</td>
+                        </tr>
+                        <tr>
+                            <td class="time-col">10:15-11:15</td>
+                            <td class="class">历史</td>
+                            <td class="class">地理</td>
+                            <td class="class">政治</td>
+                            <td class="class">历史</td>
+                            <td class="class">地理</td>
+                        </tr>
+                        <tr>
+                            <td class="time-col">11:15-12:15</td>
+                            <td class="class">体育</td>
+                            <td class="class">音乐</td>
+                            <td class="class">美术</td>
+                            <td class="class">体育</td>
+                            <td class="class">信息技术</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </section>
+
+        <!-- 第 5 部分：实际应用 -->
+        <section id="examples">
+            <h2>第 5 部分：实际应用示例</h2>
+
+            <h3>示例 1：产品价格表</h3>
+            <div class="demo-box">
+                <table class="price-table">
+                    <thead>
+                        <tr>
+                            <th>套餐</th>
+                            <th>基础版</th>
+                            <th>专业版</th>
+                            <th>企业版</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>价格</strong></td>
+                            <td class="price">¥99/月</td>
+                            <td class="price">¥299/月</td>
+                            <td class="price">¥999/月</td>
+                        </tr>
+                        <tr>
+                            <td><strong>用户数</strong></td>
+                            <td>1 人</td>
+                            <td>10 人</td>
+                            <td>无限制</td>
+                        </tr>
+                        <tr>
+                            <td><strong>存储空间</strong></td>
+                            <td>10 GB</td>
+                            <td>100 GB</td>
+                            <td>1 TB</td>
+                        </tr>
+                        <tr>
+                            <td><strong>技术支持</strong></td>
+                            <td>邮件</td>
+                            <td>邮件 + 电话</td>
+                            <td>24/7 专属</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>示例 2：产品对比表</h3>
+            <div class="demo-box">
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>功能</th>
+                            <th>iPhone 15</th>
+                            <th>iPhone 15 Pro</th>
+                            <th>iPhone 15 Pro Max</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="feature-col">屏幕尺寸</td>
+                            <td>6.1 英寸</td>
+                            <td>6.1 英寸</td>
+                            <td>6.7 英寸</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-col">处理器</td>
+                            <td>A16 芯片</td>
+                            <td>A17 Pro</td>
+                            <td>A17 Pro</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-col">120Hz 刷新率</td>
+                            <td class="no">✗</td>
+                            <td class="yes">✓</td>
+                            <td class="yes">✓</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-col">钛金属边框</td>
+                            <td class="no">✗</td>
+                            <td class="yes">✓</td>
+                            <td class="yes">✓</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-col">长焦摄像头</td>
+                            <td class="no">✗</td>
+                            <td class="yes">✓ (3x)</td>
+                            <td class="yes">✓ (5x)</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-col">起售价</td>
+                            <td>¥5,999</td>
+                            <td>¥7,999</td>
+                            <td>¥9,999</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>示例 3：学生成绩表</h3>
+            <div class="demo-box">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>姓名</th>
+                            <th>语文</th>
+                            <th>数学</th>
+                            <th>英语</th>
+                            <th>总分</th>
+                            <th>平均分</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>张三</td>
+                            <td class="number">85</td>
+                            <td class="number">92</td>
+                            <td class="number">88</td>
+                            <td class="number"><strong>265</strong></td>
+                            <td class="number">88.3</td>
+                        </tr>
+                        <tr>
+                            <td>李四</td>
+                            <td class="number">90</td>
+                            <td class="number">85</td>
+                            <td class="number">92</td>
+                            <td class="number"><strong>267</strong></td>
+                            <td class="number">89.0</td>
+                        </tr>
+                        <tr>
+                            <td>王五</td>
+                            <td class="number">88</td>
+                            <td class="number">90</td>
+                            <td class="number">85</td>
+                            <td class="number"><strong>263</strong></td>
+                            <td class="number">87.7</td>
+                        </tr>
+                        <tr>
+                            <td>赵六</td>
+                            <td class="number">92</td>
+                            <td class="number">88</td>
+                            <td class="number">90</td>
+                            <td class="number"><strong>270</strong></td>
+                            <td class="number">90.0</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr style="background-color: #e3f2fd; font-weight: bold;">
+                            <td>班级平均</td>
+                            <td class="number">88.8</td>
+                            <td class="number">88.8</td>
+                            <td class="number">88.8</td>
+                            <td class="number">266.3</td>
+                            <td class="number">88.8</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <h3>示例 4：销售数据表</h3>
+            <div class="demo-box">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th rowspan="2">月份</th>
+                            <th colspan="3">销售额（万元）</th>
+                            <th rowspan="2">同比增长</th>
+                        </tr>
+                        <tr>
+                            <th>北京</th>
+                            <th>上海</th>
+                            <th>广州</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1月</td>
+                            <td class="number">120</td>
+                            <td class="number">150</td>
+                            <td class="number">110</td>
+                            <td class="number">+15%</td>
+                        </tr>
+                        <tr>
+                            <td>2月</td>
+                            <td class="number">135</td>
+                            <td class="number">160</td>
+                            <td class="number">125</td>
+                            <td class="number">+18%</td>
+                        </tr>
+                        <tr>
+                            <td>3月</td>
+                            <td class="number">145</td>
+                            <td class="number">175</td>
+                            <td class="number">130</td>
+                            <td class="number">+20%</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr style="background-color: #e3f2fd; font-weight: bold;">
+                            <td>总计</td>
+                            <td class="number">400</td>
+                            <td class="number">485</td>
+                            <td class="number">365</td>
+                            <td class="number">+17.7%</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+        </section>
+
+        <!-- 第 6 部分：表格属性 -->
+        <section id="attributes">
+            <h2>第 6 部分：常用属性</h2>
+
+            <h3>表格常用属性</h3>
+            <table class="styled-table">
+                <thead>
+                    <tr>
+                        <th>属性</th>
+                        <th>用途</th>
+                        <th>示例</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>border</code></td>
+                        <td>设置边框（现代网页用 CSS）</td>
+                        <td><code>&lt;table border="1"&gt;</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>width</code></td>
+                        <td>设置宽度（推荐用 CSS）</td>
+                        <td><code>&lt;table width="100%"&gt;</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>cellpadding</code></td>
+                        <td>单元格内边距（已废弃，用 CSS）</td>
+                        <td><code>&lt;table cellpadding="10"&gt;</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>cellspacing</code></td>
+                        <td>单元格间距（已废弃，用 CSS）</td>
+                        <td><code>&lt;table cellspacing="0"&gt;</code></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>单元格属性</h3>
+            <table class="styled-table">
+                <thead>
+                    <tr>
+                        <th>属性</th>
+                        <th>用途</th>
+                        <th>示例</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>colspan</code></td>
+                        <td>横向合并单元格</td>
+                        <td><code>&lt;td colspan="2"&gt;</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>rowspan</code></td>
+                        <td>纵向合并单元格</td>
+                        <td><code>&lt;td rowspan="3"&gt;</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>align</code></td>
+                        <td>水平对齐（已废弃，用 CSS）</td>
+                        <td><code>&lt;td align="center"&gt;</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>valign</code></td>
+                        <td>垂直对齐（已废弃，用 CSS）</td>
+                        <td><code>&lt;td valign="middle"&gt;</code></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="note">
+                <strong>⚠️ 重要提示：</strong>
+                <p>很多老的表格属性已被废弃，现代网页应该使用 <strong>CSS</strong> 来设置样式。例如：</p>
+                <ul>
+                    <li>❌ 老方法：<code>&lt;table border="1" cellpadding="10"&gt;</code></li>
+                    <li>✅ 新方法：<code>&lt;table style="border: 1px solid #ddd; padding: 10px;"&gt;</code></li>
+                </ul>
+            </div>
+
+        </section>
+
+        <!-- 第 7 部分：最佳实践 -->
+        <section id="best-practices">
+            <h2>第 7 部分：最佳实践</h2>
+
+            <h3>✅ 好的做法</h3>
+
+            <div class="demo-box">
+                <h4>1. 使用语义化标签</h4>
+                <div class="code-box">
+&lt;!-- ✅ 好：使用 thead, tbody, tfoot --&gt;
+&lt;table&gt;
+    &lt;thead&gt;
+        &lt;tr&gt;&lt;th&gt;标题&lt;/th&gt;&lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+        &lt;tr&gt;&lt;td&gt;数据&lt;/td&gt;&lt;/tr&gt;
+    &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;!-- ❌ 差：没有分组 --&gt;
+&lt;table&gt;
+    &lt;tr&gt;&lt;th&gt;标题&lt;/th&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;数据&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;
+                </div>
+
+                <h4>2. 使用 &lt;th&gt; 作为表头</h4>
+                <div class="code-box">
+&lt;!-- ✅ 好：使用 th --&gt;
+&lt;tr&gt;
+    &lt;th&gt;姓名&lt;/th&gt;
+    &lt;th&gt;年龄&lt;/th&gt;
+&lt;/tr&gt;
+
+&lt;!-- ❌ 差：用 td 做表头 --&gt;
+&lt;tr&gt;
+    &lt;td&gt;&lt;strong&gt;姓名&lt;/strong&gt;&lt;/td&gt;
+    &lt;td&gt;&lt;strong&gt;年龄&lt;/strong&gt;&lt;/td&gt;
+&lt;/tr&gt;
+                </div>
+
+                <h4>3. 用 CSS 控制样式</h4>
+                <div class="code-box">
+&lt;!-- ✅ 好：用 CSS --&gt;
+&lt;table style="border-collapse: collapse; width: 100%;"&gt;
+    &lt;tr&gt;
+        &lt;td style="border: 1px solid #ddd; padding: 8px;"&gt;内容&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;!-- ❌ 差：用老式属性 --&gt;
+&lt;table border="1" cellpadding="8" width="100%"&gt;
+    &lt;tr&gt;
+        &lt;td&gt;内容&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+                </div>
+
+                <h4>4. 保持结构清晰</h4>
+                <div class="code-box">
+&lt;!-- ✅ 好：缩进清晰 --&gt;
+&lt;table&gt;
+    &lt;thead&gt;
+        &lt;tr&gt;
+            &lt;th&gt;标题&lt;/th&gt;
+        &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+        &lt;tr&gt;
+            &lt;td&gt;数据&lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/tbody&gt;
+&lt;/table&gt;
+                </div>
+            </div>
+
+            <h3>❌ 避免的做法</h3>
+
+            <div class="demo-box">
+                <h4>1. 不要用表格布局网页</h4>
+                <div class="code-box">
+&lt;!-- ❌ 错误：用表格布局 --&gt;
+&lt;table&gt;
+    &lt;tr&gt;
+        &lt;td&gt;侧边栏&lt;/td&gt;
+        &lt;td&gt;主内容&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;!-- ✅ 正确：用 div + CSS 布局 --&gt;
+&lt;div style="display: flex;"&gt;
+    &lt;div&gt;侧边栏&lt;/div&gt;
+    &lt;div&gt;主内容&lt;/div&gt;
+&lt;/div&gt;
+                </div>
+                <p style="color: #f44336;"><strong>原因：</strong>表格是用来展示数据的，不是用来布局的！</p>
+
+                <h4>2. 不要嵌套太多层表格</h4>
+                <div class="code-box">
+&lt;!-- ❌ 错误：表格套表格套表格 --&gt;
+&lt;table&gt;
+    &lt;tr&gt;
+        &lt;td&gt;
+            &lt;table&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;
+                        &lt;table&gt;...&lt;/table&gt;
+                    &lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/table&gt;
+        &lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+                </div>
+                <p style="color: #f44336;"><strong>原因：</strong>难以维护，性能差，屏幕阅读器难以理解。</p>
+
+                <h4>3. 不要忘记表头</h4>
+                <div class="code-box">
+&lt;!-- ❌ 差：没有表头，不知道每列是什么 --&gt;
+&lt;table&gt;
+    &lt;tr&gt;
+        &lt;td&gt;张三&lt;/td&gt;
+        &lt;td&gt;25&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;!-- ✅ 好：有清晰的表头 --&gt;
+&lt;table&gt;
+    &lt;tr&gt;
+        &lt;th&gt;姓名&lt;/th&gt;
+        &lt;th&gt;年龄&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;张三&lt;/td&gt;
+        &lt;td&gt;25&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+                </div>
+            </div>
+
+        </section>
+
+        <!-- 第 8 部分：响应式表格 -->
+        <section id="responsive">
+            <h2>第 8 部分：响应式表格提示</h2>
+
+            <div class="note">
+                <h4>📱 在小屏幕上的问题</h4>
+                <p>表格在手机上容易显示不全。解决方法：</p>
+                <ol>
+                    <li><strong>横向滚动</strong>：用一个容器包裹表格</li>
+                    <li><strong>简化表格</strong>：隐藏不重要的列</li>
+                    <li><strong>改变布局</strong>：在小屏幕上变成列表</li>
+                </ol>
+            </div>
+
+            <h3>横向滚动示例</h3>
+            <div class="code-box">
+&lt;div style="overflow-x: auto;"&gt;
+    &lt;table&gt;
+        &lt;!-- 表格内容 --&gt;
+    &lt;/table&gt;
+&lt;/div&gt;
+            </div>
+
+            <div class="demo-box">
+                <p><strong>效果：</strong>在窄屏幕上可以左右滑动查看完整表格</p>
+                <div style="overflow-x: auto; border: 1px solid #ddd; padding: 10px;">
+                    <table class="styled-table" style="min-width: 600px;">
+                        <thead>
+                            <tr>
+                                <th>列1</th>
+                                <th>列2</th>
+                                <th>列3</th>
+                                <th>列4</th>
+                                <th>列5</th>
+                                <th>列6</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>数据1</td>
+                                <td>数据2</td>
+                                <td>数据3</td>
+                                <td>数据4</td>
+                                <td>数据5</td>
+                                <td>数据6</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer style="text-align: center; padding: 2rem; background: #333; color: white; margin-top: 2rem;">
+        <p>&copy; 2024 表格完全教程</p>
+        <p>掌握表格，让数据展示更清晰！</p>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CSS 第12步：过渡、变换与动画动效</title>
+  <style>
+    :root{ --brand:#f43f5e; --accent:#fb7185; --bg:#f7f8fb; --card:#fff; --text:#0f172a; --muted:#64748b }
+    *{ box-sizing:border-box }
+    html,body{ margin:0; padding:0 }
+    body{ font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial,"Noto Sans","Microsoft YaHei",sans-serif; color:var(--text); background:var(--bg); line-height:1.6 }
+    .container{ max-width:1080px; margin:0 auto; padding:24px }
+    header{ background:linear-gradient(135deg,var(--brand),var(--accent)); color:#fff; border-radius:14px; padding:28px 24px; margin-bottom:24px; text-align:center }
+    header h1{ margin:0 0 8px }
+    section{ background:var(--card); border-radius:12px; box-shadow:0 6px 20px rgba(17,24,39,.08); padding:22px; margin-bottom:22px }
+    h2{ color:var(--brand); border-bottom:2px solid var(--brand); padding-bottom:8px; margin-top:0 }
+    h3{ color:#be123c }
+    .code{ background:#0b1020; color:#e5e7eb; border-radius:8px; padding:14px; overflow:auto; font:14px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace; margin:12px 0 }
+    .note{ background:#fffbe6; border-left:4px solid #f59e0b; padding:10px 12px; border-radius:6px; margin:12px 0; color:#4b5563 }
+    .grid{ display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)) }
+
+    /* 1. 过渡（transition） */
+    .btn{ background:var(--brand); color:#fff; border:none; border-radius:10px; padding:10px 14px; cursor:pointer; transition: background-color .25s ease, transform .25s ease }
+    .btn:hover{ background:#be123c; transform: translateY(-2px) }
+    .btn:active{ transform: translateY(0) scale(.98) }
+
+    .card{ border:1px solid #e5e7eb; border-radius:12px; padding:14px; background:#fff; box-shadow:0 6px 16px rgba(0,0,0,.06); transition: box-shadow .3s cubic-bezier(.22,.61,.36,1), transform .3s cubic-bezier(.22,.61,.36,1) }
+    .card:hover{ transform: translateY(-4px); box-shadow:0 18px 40px rgba(0,0,0,.12) }
+
+    /* 2. 变换（transform） */
+    .demo-box{ width:120px; height:120px; background:#fee2e2; border:1px solid #fecaca; border-radius:12px; display:flex; align-items:center; justify-content:center; margin:8px; transition: transform .3s ease }
+    .demo-translate:hover{ transform: translate(12px, -8px) }
+    .demo-scale:hover{ transform: scale(1.12) }
+    .demo-rotate:hover{ transform: rotate(8deg) }
+    .demo-skew:hover{ transform: skew(6deg, 2deg) }
+    .origin{ transform-origin: left top }
+
+    /* 3. 3D 与透视（轻触） */
+    .scene{ perspective: 800px }
+    .flip{ width:180px; height:120px; position:relative; transform-style: preserve-3d; transition: transform .6s ease; cursor:pointer }
+    .flip:hover{ transform: rotateY(180deg) }
+    .flip .face{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; border-radius:12px; backface-visibility:hidden }
+    .flip .front{ background:#e0f2fe; border:1px solid #bae6fd }
+    .flip .back{ background:#dcfce7; border:1px solid #bbf7d0; transform: rotateY(180deg) }
+
+    /* 4. 关键帧动画（animation） */
+    @keyframes pulse{
+      0%, 100% { transform: scale(1); opacity: 1 }
+      50% { transform: scale(1.08); opacity: .9 }
+    }
+    @keyframes slide-in{
+      from { transform: translateY(12px); opacity: 0 }
+      to { transform: translateY(0); opacity: 1 }
+    }
+    @keyframes spin { to { transform: rotate(360deg) } }
+
+    .pill{ display:inline-block; padding:6px 10px; border-radius:999px; background:#fce7f3; border:1px solid #fbcfe8; animation: pulse 1.2s ease-in-out infinite }
+    .panel{ border:1px solid #e5e7eb; border-radius:12px; padding:14px; background:#fff; animation: slide-in .4s ease both }
+    .loader{ width:26px; height:26px; border-radius:50%; border:3px solid #e5e7eb; border-top-color:#f43f5e; animation: spin .9s linear infinite }
+
+    /* 动画控制类 */
+    .is-paused{ animation-play-state: paused }
+
+    /* 5. 性能与 will-change */
+    .gpu{ will-change: transform } /* 提示浏览器做合成层优化（谨慎使用） */
+
+    /* 6. 滚动与动效偏好 */
+    html{ scroll-behavior: smooth }
+    @media (prefers-reduced-motion: reduce){
+      *{ animation: none !important; transition: none !important }
+      html{ scroll-behavior: auto }
+    }
+
+    .kbd{ font:12px ui-monospace, SFMono-Regular, Menlo, Consolas; background:#111827; color:#fff; padding:2px 6px; border-radius:4px }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>✨ CSS 第 12 步：过渡、变换与动画动效</h1>
+      <p>掌握 transition/transform/animation，注重性能与可访问性（减少动态偏好）</p>
+    </header>
+
+    <section>
+      <h2>1. 过渡（transition）</h2>
+      <p>为属性变化添加时间与缓动，常用于 hover/active/focus 等状态过渡：</p>
+      <div style="display:flex; gap:10px; flex-wrap:wrap">
+        <button class="btn">悬停试试（背景+位移）</button>
+        <div class="card" style="max-width:320px">卡片 hover：位移 + 阴影渐变，使用 cubic-bezier 自定义节奏。</div>
+      </div>
+      <div class="code">.btn{ transition: background-color .25s ease, transform .25s ease }\n.card{ transition: box-shadow .3s cubic-bezier(.22,.61,.36,1), transform .3s cubic-bezier(.22,.61,.36,1) }</div>
+      <div class="note">建议：优先只过渡 <strong>transform/opacity</strong> 等合成属性，避免引发重排。</div>
+    </section>
+
+    <section>
+      <h2>2. 变换（transform）</h2>
+      <div class="grid">
+        <div>
+          <h3>二维变换</h3>
+          <div style="display:flex; flex-wrap:wrap">
+            <div class="demo-box demo-translate">translate</div>
+            <div class="demo-box demo-scale">scale</div>
+            <div class="demo-box demo-rotate">rotate</div>
+            <div class="demo-box demo-skew">skew</div>
+          </div>
+          <div class="code">.el:hover{ transform: translate/scale/rotate/skew }\n.el{ transform-origin: left top }</div>
+        </div>
+        <div>
+          <h3>3D 与透视</h3>
+          <div class="scene">
+            <div class="flip">
+              <div class="face front">Front</div>
+              <div class="face back">Back</div>
+            </div>
+          </div>
+          <div class="code">.scene{ perspective: 800px } .flip{ transform-style: preserve-3d } .flip:hover{ transform: rotateY(180deg) }</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>3. 关键帧动画（animation）</h2>
+      <div style="display:flex; gap:14px; align-items:center; flex-wrap:wrap">
+        <span class="pill">呼吸动效</span>
+        <div class="panel">入场动效（slide-in）</div>
+        <div class="loader" title="加载中"></div>
+      </div>
+      <div style="margin-top:10px">
+        <button class="btn" id="toggle">暂停/继续 动画</button>
+      </div>
+      <div class="code">@keyframes pulse{ 0%,100%{ transform:scale(1) } 50%{ transform:scale(1.08) } }\n.el{ animation: pulse 1.2s ease-in-out infinite }</div>
+      <div class="note">可调参数：<span class="kbd">duration</span>、<span class="kbd">timing-function</span>、<span class="kbd">delay</span>、<span class="kbd">iteration-count</span>、<span class="kbd">direction</span>、<span class="kbd">fill-mode</span>、<span class="kbd">play-state</span>。</div>
+    </section>
+
+    <section>
+      <h2>4. 性能优化与最佳实践</h2>
+      <ul>
+        <li>优先使用 transform/opacity 做动效，避免影响布局与绘制。</li>
+        <li>批量动画前可用 <code>will-change</code> 提示浏览器，但应按需、短期使用。</li>
+        <li>复杂动画考虑降低帧率或范围；对低性能设备提供简化版本。</li>
+      </ul>
+      <div class="code">.chip{ will-change: transform } /* 合理、临时地使用 */</div>
+    </section>
+
+    <section>
+      <h2>5. 滚动与减少动态偏好</h2>
+      <p>页面默认启用平滑滚动；如用户开启“减少动态”，将禁用动画/过渡并改为即时滚动：</p>
+      <div class="code">html{ scroll-behavior: smooth }\n@media (prefers-reduced-motion: reduce){ *{ animation: none; transition: none } html{ scroll-behavior: auto } }</div>
+      <div class="note">可访问性：尊重用户系统设置（Windows/系统辅助功能 → 减少动画）。</div>
+    </section>
+
+    <section>
+      <h2>综合练习</h2>
+      <ol>
+        <li>为按钮添加 hover 过渡与 active 压下效果（仅使用 transform/opacity）。</li>
+        <li>制作 3D 翻转卡片：hover 时旋转，背面显示更多信息。</li>
+        <li>实现一个入场动画：列表项依次 slide-in（使用 animation-delay）。</li>
+        <li>添加 <code>prefers-reduced-motion</code> 适配，禁用动画并保留功能完整。</li>
+      </ol>
+    </section>
+
+    <footer style="text-align:center; color:var(--muted)">
+      <p>&copy; 2024 CSS 第12步 · 过渡、变换与动画动效</p>
+    </footer>
+  </div>
+
+  <script>
+    // 简单的动画暂停/恢复控制
+    document.getElementById('toggle')?.addEventListener('click', () => {
+      document.querySelectorAll('.pill, .panel, .loader').forEach(el => {
+        el.classList.toggle('is-paused');
+      });
+    });
+  </script>
+</body>
+</html>
