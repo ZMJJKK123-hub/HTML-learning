@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>链接和图片 - 让网页更丰富</title>
+</head>
+<body>
+    <header>
+        <h1>链接和图片完全教程</h1>
+        <p>学习如何在网页中添加链接和图片</p>
+    </header>
+
+    <nav>
+        <a href="#links">链接部分</a> | 
+        <a href="#images">图片部分</a> | 
+        <a href="#paths">路径讲解</a>
+    </nav>
+
+    <main>
+
+        <!-- 链接部分 -->
+        <section id="links">
+            <h2>第 1 部分：链接 &lt;a&gt; 标签</h2>
+
+            <h3>什么是 &lt;a&gt; 标签？</h3>
+            <p>&lt;a&gt; 标签（anchor，锚点）用来创建超链接。点击链接可以跳转到另一个页面或网站。</p>
+
+            <!-- 基础链接 -->
+            <h3>1. 最基础的外部链接</h3>
+            <p>这是链接到外部网站的方式：</p>
+            <p><a href="https://www.baidu.com">点击这里访问百度</a></p>
+            
+            <div style="background: #f0f0f0; padding: 10px; margin: 10px 0; border-left: 4px solid #333;">
+                <p><strong>代码：</strong></p>
+                <p>&lt;a href="https://www.baidu.com"&gt;点击这里访问百度&lt;/a&gt;</p>
+                <p><strong>说明：</strong> href 属性包含链接的 URL 地址</p>
+            </div>
+
+            <!-- 内部链接 -->
+            <h3>2. 页面内部链接（锚点跳转）</h3>
+            <p>你可以点击下面的链接跳转到这个页面的其他部分：</p>
+            <ul>
+                <li><a href="#links">跳转到"链接部分"</a></li>
+                <li><a href="#images">跳转到"图片部分"</a></li>
+                <li><a href="#paths">跳转到"路径讲解"</a></li>
+            </ul>
+            
+            <div style="background: #f0f0f0; padding: 10px; margin: 10px 0; border-left: 4px solid #333;">
+                <p><strong>代码：</strong></p>
+                <p>&lt;a href="#images"&gt;跳转到图片部分&lt;/a&gt;</p>
+                <p>&lt;h2 id="images"&gt;图片部分&lt;/h2&gt;</p>
+                <p><strong>说明：</strong> # 表示页面内跳转，id 是目标元素的标识符</p>
+            </div>
+
+            <!-- 在新窗口打开 -->
+            <h3>3. 在新标签页打开链接</h3>
+            <p><a href="https://www.google.com" target="_blank">在新标签页打开 Google</a></p>
+            
+            <div style="background: #f0f0f0; padding: 10px; margin: 10px 0; border-left: 4px solid #333;">
+                <p><strong>代码：</strong></p>
+                <p>&lt;a href="https://www.google.com" target="_blank"&gt;在新标签页打开 Google&lt;/a&gt;</p>
+                <p><strong>说明：</strong> target="_blank" 会在新标签页打开链接，不会关闭当前页面</p>
+            </div>
+
+            <!-- 邮件链接 -->
+            <h3>4. 邮件链接</h3>
+            <p><a href="mailto:example@example.com">发送邮件给我</a></p>
+            
+            <div style="background: #f0f0f0; padding: 10px; margin: 10px 0; border-left: 4px solid #333;">
+                <p><strong>代码：</strong></p>
+                <p>&lt;a href="mailto:example@example.com"&gt;发送邮件给我&lt;/a&gt;</p>
+                <p><strong>说明：</strong> 点击链接会打开用户的默认邮箱应用</p>
+            </div>
+
+            <!-- 电话链接 -->
+            <h3>5. 电话链接</h3>
+            <p><a href="tel:+8613800138000">拨打我的电话</a></p>
+            
+            <div style="background: #f0f0f0; padding: 10px; margin: 10px 0; border-left: 4px solid #333;">
+                <p><strong>代码：</strong></p>
+                <p>&lt;a href="tel:+8613800138000"&gt;拨打我的电话&lt;/a&gt;</p>
+                <p><strong>说明：</strong> 在手机上点击会拨打电话，在电脑上通常没有反应</p>
+            </div>
+
+            <!-- 链接属性 -->
+            <h3>6. 链接的常用属性</h3>
+            
+            <h4>href 属性（必需）</h4>
+            <p><a href="https://www.github.com">访问 GitHub</a></p>
+            <p><strong>作用：</strong> 指定链接的目标地址</p>
+
+            <h4>target 属性</h4>
+            <ul>
+                <li><code>target="_self"</code> - 在当前窗口打开（默认）</li>
+                <li><code>target="_blank"</code> - 在新标签页打开</li>
+                <li><code>target="_parent"</code> - 在父框架打开</li>
+                <li><code>target="_top"</code> - 在顶层窗口打开</li>
+            </ul>
+
+            <h4>title 属性（提示）</h4>
+            <p><a href="https://www.wikipedia.org" title="维基百科 - 自由的百科全书">点击查看维基百科（鼠标悬停看提示）</a></p>
+            <p><strong>作用：</strong> 鼠标悬停时显示提示文本</p>
+
+            <h4>rel 属性</h4>
+            <p><a href="https://www.example.com" rel="nofollow">外部链接（告诉搜索引擎不追踪）</a></p>
+            <p><strong>作用：</strong> 定义链接与当前文档的关系</p>
+
+            <!-- 链接的类型总结 -->
+            <h3>7. 所有链接类型总结</h3>
+            <table style="width: 100%; border-collapse: collapse;">
+                <tr style="background: #333; color: white;">
+                    <th style="border: 1px solid #ddd; padding: 10px;">链接类型</th>
+                    <th style="border: 1px solid #ddd; padding: 10px;">href 值</th>
+                    <th style="border: 1px solid #ddd; padding: 10px;">示例</th>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 10px;">外部网站</td>
+                    <td style="border: 1px solid #ddd; padding: 10px;"><code>https://...</code></td>
+                    <td style="border: 1px solid #ddd; padding: 10px;"><code>&lt;a href="https://google.com"&gt;</code></td>
+                </tr>
+                <tr style="background: #f9f9f9;">
+                    <td style="border: 1px solid #ddd; padding: 10px;">相对路径</td>
+                    <td style="border: 1px solid #ddd; padding: 10px;"><code>page.html</code></td>
+                    <td style="border: 1px solid #ddd; padding: 10px;"><code>&lt;a href="page.html"&gt;</code></td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 10px;">页面内跳转</td>
+                    <td style="border: 1px solid #ddd; padding: 10px;"><code>#id</code></td>
+                    <td style="border: 1px solid #ddd; padding: 10px;"><code>&lt;a href="#top"&gt;</code></td>
+                </tr>
+                <tr style="background: #f9f9f9;">
+                    <td style="border: 1px solid #ddd; padding: 10px;">邮件</td>
+                    <td style="border: 1px solid #ddd; padding: 10px;"><code>mailto:</code></td>
+                    <td style="border: 1px solid #ddd; padding: 10px;"><code>&lt;a href="mailto:user@example.com"&gt;</code></td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 10px;">电话</td>
+                    <td style="border: 1px solid #ddd; padding: 10px;"><code>tel:</code></td>
+                    <td style="border: 1px solid #ddd; padding: 10px;"><code>&lt;a href="tel:+86138..."&gt;</code></td>
+                </tr>
+            </table>
+
+        </section>
+
+        <hr>
+
+        <!-- 图片部分 -->
+        <section id="images">
+            <h2>第 2 部分：图片 &lt;img&gt; 标签</h2>
+
+            <h3>什么是 &lt;img&gt; 标签？</h3>
+            <p>&lt;img&gt; 标签用来在网页中显示图片。它是一个自闭合标签（没有结束标签）。</p>
+
+            <!-- 最基础的图片 -->
+            <h3>1. 最基础的图片</h3>
+            <p>
+                <img src="https://via.placeholder.com/200x100?text=示例图片" alt="一个示例图片">
+            </p>
+            
+            <div style="background: #f0f0f0; padding: 10px; margin: 10px 0; border-left: 4px solid #333;">
+                <p><strong>代码：</strong></p>
+                <p>&lt;img src="image.jpg" alt="图片描述"&gt;</p>
+                <p><strong>说明：</strong> src 是图片路径，alt 是图片加载失败时显示的文本</p>
+            </div>
+
+            <!-- 图片属性 -->
+            <h3>2. 图片的属性</h3>
+
+            <h4>src 属性（必需）</h4>
+            <p><strong>作用：</strong> 指定图片的路径（本地文件或网络地址）</p>
+            <p><strong>示例：</strong></p>
+            <ul>
+                <li><code>src="image.jpg"</code> - 同一文件夹</li>
+                <li><code>src="images/photo.jpg"</code> - images 文件夹</li>
+                <li><code>src="https://example.com/image.jpg"</code> - 网络图片</li>
+            </ul>
+
+            <h4>alt 属性（必需）</h4>
+            <p>
+                <img src="https://via.placeholder.com/300x200?text=图片" alt="这是一个示例图片的描述">
+            </p>
+            <p><strong>作用：</strong> 当图片无法加载时显示的替代文本</p>
+            <p><strong>为什么重要：</strong></p>
+            <ul>
+                <li>如果图片加载失败，用户能看到文字说明</li>
+                <li>屏幕阅读器会读出 alt 文本（帮助视障人士）</li>
+                <li>提高网站的可访问性</li>
+                <li>有助于搜索引擎理解图片内容</li>
+            </ul>
+
+            <h4>width 和 height 属性</h4>
+            <p>
+                <img src="https://via.placeholder.com/250x150?text=指定尺寸" 
+                     alt="指定宽高的图片"
+                     width="250" 
+                     height="150">
+            </p>
+            <p><strong>作用：</strong> 指定图片的显示宽度和高度（单位：像素）</p>
+            <p><strong>好处：</strong></p>
+            <ul>
+                <li>控制图片在页面上的大小</li>
+                <li>可以防止图片抖动（加载时）</li>
+                <li>通常应该只指定宽度，让浏览器自动计算高度以保持比例</li>
+            </ul>
+
+            <h4>title 属性</h4>
+            <p>
+                <img src="https://via.placeholder.com/200x100?text=提示" 
+                     alt="有提示的图片"
+                     title="鼠标悬停看这个提示">
+            </p>
+            <p><strong>作用：</strong> 鼠标悬停时显示提示文本</p>
+
+            <!-- 图片格式 -->
+            <h3>3. 常见的图片格式</h3>
+            <table style="width: 100%; border-collapse: collapse;">
+                <tr style="background: #333; color: white;">
+                    <th style="border: 1px solid #ddd; padding: 10px;">格式</th>
+                    <th style="border: 1px solid #ddd; padding: 10px;">扩展名</th>
+                    <th style="border: 1px solid #ddd; padding: 10px;">用途</th>
+                    <th style="border: 1px solid #ddd; padding: 10px;">特点</th>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 10px;">JPEG</td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">.jpg, .jpeg</td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">照片</td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">有损压缩，文件小</td>
+                </tr>
+                <tr style="background: #f9f9f9;">
+                    <td style="border: 1px solid #ddd; padding: 10px;">PNG</td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">.png</td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">图形、logo</td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">无损，支持透明</td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 10px;">GIF</td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">.gif</td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">动画</td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">支持动画，文件小</td>
+                </tr>
+                <tr style="background: #f9f9f9;">
+                    <td style="border: 1px solid #ddd; padding: 10px;">WebP</td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">.webp</td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">现代格式</td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">体积小，质量好</td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 10px;">SVG</td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">.svg</td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">矢量图</td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">可缩放，不失清晰</td>
+                </tr>
+            </table>
+
+            <!-- 响应式图片 -->
+            <h3>4. 响应式图片（高级）</h3>
+            <div style="background: #f0f0f0; padding: 10px; margin: 10px 0; border-left: 4px solid #333;">
+                <p><strong>方法 1：使用 max-width</strong></p>
+                <p>&lt;img src="image.jpg" alt="描述" style="max-width: 100%;"&gt;</p>
+                <p><strong>说明：</strong> 图片宽度不会超过容器，自动缩放以适应屏幕大小</p>
+            </div>
+
+            <div style="background: #f0f0f0; padding: 10px; margin: 10px 0; border-left: 4px solid #333;">
+                <p><strong>方法 2：使用 srcset 属性</strong></p>
+                <p>&lt;img src="small.jpg" <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;srcset="small.jpg 800w, medium.jpg 1200w, large.jpg 1600w" <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;alt="描述"&gt;</p>
+                <p><strong>说明：</strong> 根据屏幕大小加载不同尺寸的图片</p>
+            </div>
+
+        </section>
+
+        <hr>
+
+        <!-- 路径讲解 -->
+        <section id="paths">
+            <h2>第 3 部分：路径讲解（重要）</h2>
+
+            <h3>什么是路径？</h3>
+            <p>路径是告诉浏览器文件在哪里的方式。有两种主要的路径类型：</p>
+
+            <h3>1. 绝对路径</h3>
+            <p><strong>定义：</strong> 从网站根目录开始的完整路径</p>
+            <div style="background: #f0f0f0; padding: 10px; margin: 10px 0; border-left: 4px solid #333;">
+                <p><strong>示例：</strong></p>
+                <ul>
+                    <li><code>/images/photo.jpg</code> - 网站根目录的 images 文件夹</li>
+                    <li><code>/about.html</code> - 网站根目录的 about.html 文件</li>
+                    <li><code>https://example.com/images/photo.jpg</code> - 完整的网址</li>
+                </ul>
+                <p><strong>什么时候用：</strong> 链接到同一网站内的文件</p>
+            </div>
+
+            <h3>2. 相对路径</h3>
+            <p><strong>定义：</strong> 相对于当前文件位置的路径</p>
+            <div style="background: #f0f0f0; padding: 10px; margin: 10px 0; border-left: 4px solid #333;">
+                <p><strong>示例：</strong></p>
+                <ul>
+                    <li><code>image.jpg</code> - 当前文件夹内的图片</li>
+                    <li><code>images/photo.jpg</code> - 当前文件夹的 images 子文件夹</li>
+                    <li><code>../images/photo.jpg</code> - 上一级文件夹的 images 文件夹</li>
+                    <li><code>../../images/photo.jpg</code> - 上两级文件夹的 images 文件夹</li>
+                </ul>
+                <p><strong>什么时候用：</strong> 大多数时候，特别是本地文件</p>
+            </div>
+
+            <h3>3. 路径结构示例</h3>
+            <div style="background: #f0f0f0; padding: 10px; margin: 10px 0;">
+                <pre>
+my-website/
+│
+├─ index.html (主页)
+├─ about.html
+│
+├─ images/
+│  ├─ logo.png
+│  ├─ photo1.jpg
+│  └─ photo2.jpg
+│
+├─ css/
+│  └─ style.css
+│
+└─ js/
+   └─ script.js
+                </pre>
+            </div>
+
+            <h3>4. 从 about.html 中的路径示例</h3>
+            <div style="background: #f0f0f0; padding: 10px; margin: 10px 0;">
+                <p><strong>链接到 index.html：</strong></p>
+                <ul>
+                    <li><code>&lt;a href="index.html"&gt;</code> (相对)</li>
+                    <li><code>&lt;a href="/index.html"&gt;</code> (绝对)</li>
+                </ul>
+
+                <p><strong>链接到 images/logo.png：</strong></p>
+                <ul>
+                    <li><code>&lt;img src="images/logo.png"&gt;</code> (相对)</li>
+                    <li><code>&lt;img src="/images/logo.png"&gt;</code> (绝对)</li>
+                </ul>
+
+                <p><strong>链接到 css/style.css：</strong></p>
+                <ul>
+                    <li><code>&lt;link rel="stylesheet" href="css/style.css"&gt;</code> (相对)</li>
+                </ul>
+            </div>
+
+            <h3>5. 特殊路径</h3>
+            <table style="width: 100%; border-collapse: collapse;">
+                <tr style="background: #333; color: white;">
+                    <th style="border: 1px solid #ddd; padding: 10px;">符号</th>
+                    <th style="border: 1px solid #ddd; padding: 10px;">含义</th>
+                    <th style="border: 1px solid #ddd; padding: 10px;">示例</th>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 10px;"><code>./</code></td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">当前文件夹</td>
+                    <td style="border: 1px solid #ddd; padding: 10px;"><code>./image.jpg</code></td>
+                </tr>
+                <tr style="background: #f9f9f9;">
+                    <td style="border: 1px solid #ddd; padding: 10px;"><code>../</code></td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">上一级文件夹</td>
+                    <td style="border: 1px solid #ddd; padding: 10px;"><code>../images/photo.jpg</code></td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 10px;"><code>/</code></td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">网站根目录</td>
+                    <td style="border: 1px solid #ddd; padding: 10px;"><code>/images/photo.jpg</code></td>
+                </tr>
+            </table>
+
+        </section>
+
+        <!-- 综合练习 -->
+        <section>
+            <h2>综合练习</h2>
+            <article>
+                <h3>创建一个简单的相册页面</h3>
+                <p>下面是一个包含链接和图片的综合示例：</p>
+                
+                <div style="border: 1px solid #ccc; padding: 15px; background: #f9f9f9;">
+                    <h4>我的度假照片</h4>
+                    
+                    <p>
+                        <img src="https://via.placeholder.com/150x100?text=海滩" 
+                             alt="海滩照片"
+                             width="150" 
+                             height="100">
+                    </p>
+                    <p>2024年夏天在海边的度假照片</p>
+                    
+                    <p>
+                        <a href="#top">回到顶部</a> | 
+                        <a href="https://www.facebook.com" target="_blank">分享到 Facebook</a>
+                    </p>
+                </div>
+
+                <p><strong>学到的东西：</strong></p>
+                <ul>
+                    <li>如何使用 alt 属性描述图片</li>
+                    <li>如何指定图片的宽高</li>
+                    <li>如何创建锚点跳转链接</li>
+                    <li>如何在新标签页打开链接</li>
+                </ul>
+            </article>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2024 链接和图片教程</p>
+    </footer>
+</body>
+</html>
