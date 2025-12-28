@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>离线模式</title>
+  <style>
+    :root { color-scheme: light dark; }
+    body { margin: 0; font-family: system-ui, -apple-system, 'Segoe UI'; background: #0b1220; color: #e5e7eb; display: grid; place-items: center; min-height: 100vh; }
+    .card { background: #0f172a; border: 1px solid #1f2937; border-radius: 14px; padding: 20px; width: min(560px, 92vw); box-shadow: 0 12px 40px rgba(0,0,0,0.24); }
+    h1 { margin: 0 0 8px; }
+    p { color: #94a3b8; }
+    .row { display: flex; gap: 10px; flex-wrap: wrap; }
+    a, button { color: #38bdf8; background: #111827; border: 1px solid #1f2937; border-radius: 10px; padding: 8px 12px; text-decoration: none; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>当前处于离线状态</h1>
+    <p>您可以在恢复网络后刷新页面继续使用。如果已安装 PWA，部分页面在离线时仍可展示缓存内容。</p>
+    <div class="row" style="margin-top:12px;">
+      <button onclick="location.reload()">刷新重试</button>
+      <a href="./20_js_final_project.html">返回综合项目</a>
+    </div>
+  </main>
+</body>
+</html>
